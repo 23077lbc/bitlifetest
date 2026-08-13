@@ -1,0 +1,1185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>BitLife — Complete Achievement & Ribbon Checklist</title>
+
+<style>
+:root{
+  --bg:#090b12;
+  --panel:#111521;
+  --panel2:#171c2a;
+  --border:#252c3d;
+  --text:#f4f7fb;
+  --muted:#929bad;
+  --accent:#7c5cff;
+  --accent2:#a78bfa;
+  --green:#35d07f;
+  --red:#ff5d73;
+  --yellow:#f4c95d;
+  --blue:#4da3ff;
+  --orange:#ff9650;
+  --shadow:0 18px 50px rgba(0,0,0,.35);
+}
+
+*{box-sizing:border-box}
+
+body{
+  margin:0;
+  background:
+    radial-gradient(circle at 10% 0%,rgba(124,92,255,.16),transparent 30%),
+    radial-gradient(circle at 90% 10%,rgba(53,208,127,.08),transparent 25%),
+    var(--bg);
+  color:var(--text);
+  font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  min-height:100vh;
+}
+
+button,input,select{font:inherit}
+
+.app{
+  max-width:1450px;
+  margin:auto;
+  padding:28px 20px 60px;
+}
+
+header{
+  margin-bottom:22px;
+}
+
+.brand{
+  display:flex;
+  align-items:center;
+  gap:14px;
+}
+
+.logo{
+  width:54px;
+  height:54px;
+  border-radius:16px;
+  display:grid;
+  place-items:center;
+  font-size:29px;
+  background:linear-gradient(135deg,#7c5cff,#a855f7);
+  box-shadow:0 10px 30px rgba(124,92,255,.3);
+}
+
+h1{
+  margin:0;
+  font-size:clamp(25px,4vw,38px);
+  letter-spacing:-1px;
+}
+
+.subtitle{
+  color:var(--muted);
+  margin:5px 0 0;
+}
+
+.stats{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:12px;
+  margin:22px 0;
+}
+
+.stat{
+  background:linear-gradient(145deg,var(--panel),#0e121c);
+  border:1px solid var(--border);
+  border-radius:17px;
+  padding:17px;
+  box-shadow:var(--shadow);
+}
+
+.stat-label{
+  color:var(--muted);
+  font-size:12px;
+  text-transform:uppercase;
+  letter-spacing:.08em;
+}
+
+.stat-value{
+  font-size:26px;
+  font-weight:800;
+  margin-top:4px;
+}
+
+.progress{
+  height:8px;
+  background:#242a38;
+  border-radius:99px;
+  overflow:hidden;
+  margin-top:10px;
+}
+
+.progress > div{
+  height:100%;
+  width:0;
+  background:linear-gradient(90deg,var(--accent),#d16cff);
+  transition:width .35s ease;
+}
+
+.controls{
+  position:sticky;
+  top:10px;
+  z-index:20;
+  background:rgba(13,16,25,.88);
+  backdrop-filter:blur(16px);
+  border:1px solid var(--border);
+  border-radius:18px;
+  padding:12px;
+  display:grid;
+  grid-template-columns:1.6fr 1fr 1fr auto auto;
+  gap:9px;
+  margin-bottom:20px;
+  box-shadow:var(--shadow);
+}
+
+input,select,button{
+  border:1px solid var(--border);
+  color:var(--text);
+  background:#171c28;
+  border-radius:11px;
+  padding:11px 13px;
+  outline:none;
+}
+
+input:focus,select:focus{
+  border-color:var(--accent);
+  box-shadow:0 0 0 3px rgba(124,92,255,.12);
+}
+
+button{
+  cursor:pointer;
+  font-weight:700;
+  transition:.18s ease;
+}
+
+button:hover{
+  transform:translateY(-1px);
+  border-color:#514b73;
+}
+
+.primary{
+  background:linear-gradient(135deg,#7052ed,#925ce8);
+  border-color:transparent;
+}
+
+.danger{
+  color:#ff8797;
+}
+
+.tabs{
+  display:flex;
+  gap:8px;
+  margin-bottom:18px;
+}
+
+.tab{
+  padding:10px 17px;
+  border-radius:12px;
+  background:#121722;
+}
+
+.tab.active{
+  background:rgba(124,92,255,.18);
+  color:#cfc4ff;
+  border-color:rgba(124,92,255,.55);
+}
+
+.section{
+  margin-bottom:30px;
+}
+
+.section-title{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  margin-bottom:10px;
+}
+
+.section-title h2{
+  margin:0;
+  font-size:19px;
+}
+
+.section-count{
+  color:var(--muted);
+  font-size:13px;
+}
+
+.items{
+  display:grid;
+  gap:8px;
+}
+
+.item{
+  display:grid;
+  grid-template-columns:auto 1fr auto;
+  gap:13px;
+  align-items:start;
+  padding:14px;
+  border:1px solid var(--border);
+  background:linear-gradient(145deg,#111621,#0e121b);
+  border-radius:14px;
+  transition:.2s ease;
+}
+
+.item:hover{
+  border-color:#343d53;
+  transform:translateY(-1px);
+}
+
+.item.done{
+  opacity:.52;
+  order:999999;
+  background:#0d1119;
+}
+
+.checkbox{
+  appearance:none;
+  width:22px;
+  height:22px;
+  margin:1px 0 0;
+  border-radius:7px;
+  border:2px solid #444d61;
+  cursor:pointer;
+  position:relative;
+  background:#0d1118;
+}
+
+.checkbox:checked{
+  background:var(--green);
+  border-color:var(--green);
+}
+
+.checkbox:checked:after{
+  content:"✓";
+  color:#06140d;
+  font-size:15px;
+  font-weight:900;
+  position:absolute;
+  left:3px;
+  top:-1px;
+}
+
+.item-main{
+  min-width:0;
+}
+
+.item-name{
+  display:flex;
+  gap:8px;
+  align-items:center;
+  flex-wrap:wrap;
+  font-weight:800;
+  font-size:15px;
+}
+
+.emoji{
+  font-size:19px;
+}
+
+.description{
+  color:#aeb5c5;
+  margin-top:4px;
+  line-height:1.45;
+  font-size:13px;
+}
+
+.meta{
+  display:flex;
+  flex-wrap:wrap;
+  gap:5px;
+  margin-top:9px;
+}
+
+.badge{
+  display:inline-flex;
+  align-items:center;
+  gap:4px;
+  padding:4px 7px;
+  border-radius:7px;
+  font-size:10px;
+  font-weight:800;
+  text-transform:uppercase;
+  letter-spacing:.04em;
+  border:1px solid transparent;
+}
+
+.paid{
+  color:#ffd27a;
+  background:rgba(244,201,93,.11);
+  border-color:rgba(244,201,93,.28);
+}
+
+.rng{
+  color:#8fc8ff;
+  background:rgba(77,163,255,.11);
+  border-color:rgba(77,163,255,.25);
+}
+
+.ribbon{
+  color:#c8b8ff;
+  background:rgba(124,92,255,.11);
+  border-color:rgba(124,92,255,.25);
+}
+
+.difficulty{
+  color:#fff;
+}
+
+.diff-very-easy,.diff-easy{
+  background:rgba(53,208,127,.11);
+  border-color:rgba(53,208,127,.25);
+  color:#75e9a8;
+}
+
+.diff-medium,.diff-moderate{
+  background:rgba(244,201,93,.1);
+  border-color:rgba(244,201,93,.25);
+  color:#f7d779;
+}
+
+.diff-hard{
+  background:rgba(255,150,80,.11);
+  border-color:rgba(255,150,80,.25);
+  color:#ffad70;
+}
+
+.diff-very-hard,.diff-extreme{
+  background:rgba(255,93,115,.11);
+  border-color:rgba(255,93,115,.25);
+  color:#ff8293;
+}
+
+.diff-luck-based{
+  background:rgba(168,139,250,.12);
+  border-color:rgba(168,139,250,.25);
+  color:#c7b5ff;
+}
+
+.item-side{
+  color:var(--muted);
+  font-size:11px;
+  text-align:right;
+  white-space:nowrap;
+}
+
+.empty{
+  padding:50px 20px;
+  text-align:center;
+  color:var(--muted);
+  border:1px dashed var(--border);
+  border-radius:16px;
+}
+
+.loading{
+  text-align:center;
+  padding:70px 20px;
+  color:var(--muted);
+}
+
+.spinner{
+  width:34px;
+  height:34px;
+  border:3px solid #252b39;
+  border-top-color:var(--accent);
+  border-radius:50%;
+  animation:spin .8s linear infinite;
+  margin:0 auto 15px;
+}
+
+@keyframes spin{to{transform:rotate(360deg)}}
+
+.notice{
+  background:rgba(244,201,93,.08);
+  border:1px solid rgba(244,201,93,.2);
+  color:#e7d69b;
+  border-radius:13px;
+  padding:12px 14px;
+  font-size:13px;
+  line-height:1.5;
+  margin-bottom:16px;
+}
+
+.error{
+  background:rgba(255,93,115,.08);
+  border-color:rgba(255,93,115,.25);
+  color:#ffabb7;
+}
+
+footer{
+  color:#697286;
+  text-align:center;
+  font-size:12px;
+  margin-top:35px;
+  line-height:1.6;
+}
+
+@media(max-width:900px){
+  .stats{grid-template-columns:repeat(2,1fr)}
+  .controls{grid-template-columns:1fr 1fr}
+}
+
+@media(max-width:600px){
+  .app{padding:18px 12px 40px}
+  .stats{grid-template-columns:1fr 1fr}
+  .stat-value{font-size:21px}
+  .controls{
+    position:static;
+    grid-template-columns:1fr;
+  }
+  .item{
+    grid-template-columns:auto 1fr;
+  }
+  .item-side{display:none}
+}
+
+/* Difficulty accent lines */
+.item[data-diff="Very Easy"]{border-left:3px solid #35d07f}
+.item[data-diff="Easy"]{border-left:3px solid #58dc92}
+.item[data-diff="Medium"],
+.item[data-diff="Moderate"]{border-left:3px solid #f4c95d}
+.item[data-diff="Hard"]{border-left:3px solid #ff9650}
+.item[data-diff="Very Hard"]{border-left:3px solid #ff6f69}
+.item[data-diff="Extreme"]{border-left:3px solid #ff4f6c}
+.item[data-diff="Luck-based"]{border-left:3px solid #a78bfa}
+</style>
+</head>
+
+<body>
+<div class="app">
+
+<header>
+  <div class="brand">
+    <div class="logo">🎮</div>
+    <div>
+      <h1>BitLife Completion Tracker</h1>
+      <p class="subtitle">Every achievement & ribbon • synced from the BitLife wiki</p>
+    </div>
+  </div>
+</header>
+
+<div id="notice" class="notice">
+  🔄 Loading the complete achievement and ribbon lists from the BitLife wiki…
+</div>
+
+<section class="stats">
+  <div class="stat">
+    <div class="stat-label">Overall Completion</div>
+    <div class="stat-value" id="overallPct">0%</div>
+    <div class="progress"><div id="overallBar"></div></div>
+  </div>
+
+  <div class="stat">
+    <div class="stat-label">Achievements</div>
+    <div class="stat-value" id="achievementCount">0 / 0</div>
+    <div class="progress"><div id="achievementBar"></div></div>
+  </div>
+
+  <div class="stat">
+    <div class="stat-label">Ribbons</div>
+    <div class="stat-value" id="ribbonCount">0 / 0</div>
+    <div class="progress"><div id="ribbonBar"></div></div>
+  </div>
+
+  <div class="stat">
+    <div class="stat-label">Remaining</div>
+    <div class="stat-value" id="remaining">0</div>
+    <div class="progress"><div id="remainingBar"></div></div>
+  </div>
+</section>
+
+<div class="controls">
+  <input id="search" placeholder="🔎 Search achievements, ribbons, descriptions…">
+
+  <select id="category">
+    <option value="all">All categories</option>
+  </select>
+
+  <select id="difficulty">
+    <option value="all">All difficulties</option>
+    <option>Very Easy</option>
+    <option>Easy</option>
+    <option>Medium</option>
+    <option>Moderate</option>
+    <option>Hard</option>
+    <option>Very Hard</option>
+    <option>Extreme</option>
+    <option>Luck-based</option>
+  </select>
+
+  <button id="sync" class="primary">↻ Sync Wiki</button>
+  <button id="reset" class="danger">Reset Progress</button>
+</div>
+
+<div class="tabs">
+  <button class="tab active" data-tab="achievements">🏆 Achievements</button>
+  <button class="tab" data-tab="ribbons">🎗️ Ribbons</button>
+</div>
+
+<main id="content">
+  <div class="loading">
+    <div class="spinner"></div>
+    Reading the wiki…
+  </div>
+</main>
+
+<footer>
+  Data source: BitLife - Life Simulator Wiki on Fandom.<br>
+  Progress is stored locally in this browser and is never uploaded.
+</footer>
+
+</div>
+
+<script>
+/*
+  BitLife Completion Tracker
+  --------------------------
+  The wiki currently changes over time. Rather than embedding a stale
+  400+ item list, this tracker downloads the two supplied wiki pages and
+  extracts their tables/headings.
+
+  This means newly-added achievements can appear after pressing "Sync Wiki".
+*/
+
+const HOST = "bitlife-life-simulator.fandom.com";
+
+const SOURCES = {
+  achievements:
+    "https://r.jina.ai/http://" + HOST + "/wiki/Achievements",
+  ribbons:
+    "https://r.jina.ai/http://" + HOST + "/wiki/Ribbons"
+};
+
+const STORAGE = "bitlife-completion-v3";
+
+let state = {
+  achievements: [],
+  ribbons: [],
+  checked: {},
+  activeTab: "achievements",
+  search: "",
+  category: "all",
+  difficulty: "all"
+};
+
+const $ = id => document.getElementById(id);
+
+function loadSaved(){
+  try{
+    const saved = JSON.parse(localStorage.getItem(STORAGE) || "{}");
+    state.checked = saved.checked || {};
+  }catch(e){
+    state.checked = {};
+  }
+}
+
+function save(){
+  localStorage.setItem(STORAGE, JSON.stringify({
+    checked: state.checked
+  }));
+}
+
+function clean(text){
+  return String(text || "")
+    .replace(/<[^>]*>/g,"")
+    .replace(/\[.*?\]/g,"")
+    .replace(/&nbsp;/g," ")
+    .replace(/\*\*/g,"")
+    .replace(/`/g,"")
+    .replace(/\s+/g," ")
+    .trim();
+}
+
+function slug(text){
+  return clean(text)
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g,"-")
+    .replace(/^-|-$/g,"");
+}
+
+function emojiFor(name, type){
+  const n = name.toLowerCase();
+
+  const rules = [
+    [/million|money|wealth|rich|loaded|billion|zillion|cash/,"💰"],
+    [/love|lover|marry|wedding|romance|heart/,"❤️"],
+    [/death|dead|kill|murder|assassin|execution|deadly/,"💀"],
+    [/animal|lion|gorilla|hippo|unicorn|leopard|horse|cat|dog|llama|zoo/,"🐾"],
+    [/school|student|academic|degree|university|college|professor/,"🎓"],
+    [/doctor|disease|plague|rabies|health|sick/,"🩺"],
+    [/crime|criminal|rob|steal|thief|burglar|mafia|cartel|crime/,"🕵️"],
+    [/prison|jail|escape|bars|houdini/,"⛓️"],
+    [/military|general|admiral|veteran|army|navy|marine/,"🎖️"],
+    [/actor|movie|film|cinema|hollywood|theater|theatre/,"🎬"],
+    [/music|singer|album|song|concert|rapper|k-pop/,"🎵"],
+    [/social|influencer|followers|youtube|instagram|tiktok/,"📱"],
+    [/business|company|ceo|boss|career|job|work/,"💼"],
+    [/model|fashion|haute|designer/,"👗"],
+    [/royal|king|queen|monarch|prince|princess/,"👑"],
+    [/car|vehicle|bugatti|driver|pilot|boat/,"🚗"],
+    [/house|home|estate|property|real estate/,"🏠"],
+    [/casino|gamble|poker|slot|jackpot/,"🎰"],
+    [/vampire|blood|fang|coffin|undead/,"🧛"],
+    [/cult|commune|spiritual/,"🔮"],
+    [/spy|agency|operative|gadget/,"🕶️"],
+    [/fishing|fish|outdoor|hiking|camp/,"🎣"],
+    [/travel|country|globetrotter|emigrate/,"🌎"],
+    [/family|father|mother|child|children|parent/,"👨‍👩‍👧‍👦"],
+    [/party|club|rowdy|alcohol/,"🥳"],
+    [/plastic|surgery|barbie/,"💅"],
+    [/ribbon|medal|award|achievement/,"🏅"]
+  ];
+
+  for(const [regex,icon] of rules)
+    if(regex.test(n)) return icon;
+
+  return type === "ribbon" ? "🎗️" : "🏆";
+}
+
+function difficultyClass(d){
+  return "diff-" + clean(d).toLowerCase().replace(/\s+/g,"-");
+}
+
+function paidInfo(text){
+  const t = clean(text).toLowerCase();
+
+  if(
+    /bitizenship|god mode|in-app|outdoor|vampire mode|paid|yes/.test(t)
+    && !/^no$/.test(t)
+  ){
+    return true;
+  }
+
+  return false;
+}
+
+function rngInfo(text){
+  return /yes|kind of|tba|yes\/no|luck|chance/i.test(clean(text));
+}
+
+function parseAchievementTables(md){
+  const lines = md.split(/\r?\n/);
+  const output = [];
+  let category = "General";
+  let header = null;
+
+  for(let i=0;i<lines.length;i++){
+    const line = lines[i].trim();
+
+    const heading = line.match(/^#{2,4}\s+(.+?)\[\]\s*$/);
+    if(heading){
+      const h = clean(heading[1]);
+      if(
+        h &&
+        !/Achievements|List of Achievements|Special Careers|Expansion Packs/i.test(h)
+      ){
+        category = h;
+      }
+      header = null;
+      continue;
+    }
+
+    if(!line.startsWith("|")) continue;
+
+    const cells = line
+      .replace(/^\||\|$/g,"")
+      .split("|")
+      .map(clean);
+
+    if(!cells.length) continue;
+
+    if(cells.some(x => /^achievement$/i.test(x))){
+      header = cells.map(x => x.toLowerCase());
+      continue;
+    }
+
+    if(cells.every(x => /^[-:]+$/.test(x))) continue;
+
+    if(!header) continue;
+
+    let map = {};
+    header.forEach((h,j)=>map[h]=cells[j] || "");
+
+    let name =
+      map["achievement"] ||
+      cells[1] ||
+      cells[0];
+
+    name = clean(name);
+
+    if(
+      !name ||
+      name === "Achievement" ||
+      name === "Input" ||
+      /^\[?input\]?$/i.test(name)
+    ) continue;
+
+    let description =
+      map["description"] ||
+      cells[2] ||
+      "";
+
+    let purchase =
+      map["does it require in-app purchases?"] ||
+      map["does this require in-app purchases?"] ||
+      cells[4] ||
+      "";
+
+    let chance =
+      map["chance-based?"] ||
+      map["chance-based"] ||
+      cells[5] ||
+      "";
+
+    let difficulty =
+      map["difficulty"] ||
+      cells[6] ||
+      "";
+
+    let ribbon =
+      map["can you also earn a ribbon?"] ||
+      map["can also earn a ribbon?"] ||
+      map["can i also earn a ribbon?"] ||
+      map["can also earn a ribbon"] ||
+      cells[7] ||
+      "";
+
+    /*
+      Some newer wiki tables have fewer columns. Try to infer them
+      from the header rather than assuming fixed positions.
+    */
+
+    if(header.length < 7){
+      const keys = header;
+      const find = (...words) => {
+        const idx = keys.findIndex(k => words.some(w=>k.includes(w)));
+        return idx >= 0 ? cells[idx] || "" : "";
+      };
+
+      purchase = find("purchase","in-app","requires");
+      chance = find("chance");
+      difficulty = find("difficulty");
+      ribbon = find("ribbon");
+      description = find("description");
+    }
+
+    const id = "achievement:" + slug(name);
+
+    if(!output.some(x=>x.id===id)){
+      output.push({
+        id,
+        type:"achievement",
+        name,
+        description:description || "Description not provided on the source page.",
+        category,
+        purchase,
+        chance,
+        difficulty: difficulty || "Unknown",
+        ribbon,
+        emoji:emojiFor(name,"achievement")
+      });
+    }
+  }
+
+  return output;
+}
+
+function parseRibbons(md){
+  const lines = md.split(/\r?\n/);
+  const output = [];
+
+  for(let i=0;i<lines.length;i++){
+    const heading = lines[i].match(/^###\s+(.+?)\[\]\s*$/);
+    if(!heading) continue;
+
+    const name = clean(heading[1]);
+
+    if(
+      !name ||
+      /Regular Ribbons|Secret Ribbons|Ribbons/.test(name)
+    ) continue;
+
+    let description = "";
+    let difficulty = "Unknown";
+
+    for(let j=i+1;j<Math.min(i+15,lines.length);j++){
+      const x = clean(lines[j]);
+
+      if(!x) continue;
+
+      if(
+        /^The ".+" ribbon\.?$/i.test(x) ||
+        /^The '.+' ribbon\.?$/i.test(x)
+      ) continue;
+
+      if(/^Difficulty:/i.test(x)){
+        difficulty = clean(x.replace(/^Difficulty:\s*/i,""));
+        continue;
+      }
+
+      if(
+        /^It is /i.test(x) ||
+        /^Procedures to get/i.test(x) ||
+        /^Notes:/i.test(x)
+      ) break;
+
+      if(!description && x.length > 2){
+        description = x;
+        break;
+      }
+    }
+
+    const id = "ribbon:" + slug(name);
+
+    if(!output.some(x=>x.id===id)){
+      output.push({
+        id,
+        type:"ribbon",
+        name,
+        description:description || "Description not provided on the source page.",
+        category:"Ribbons",
+        purchase:"",
+        chance:/luck/i.test(difficulty) ? "Yes" : "",
+        difficulty,
+        ribbon:"",
+        emoji:emojiFor(name,"ribbon")
+      });
+    }
+  }
+
+  return output;
+}
+
+async function fetchSource(url){
+  const response = await fetch(url,{cache:"no-store"});
+  if(!response.ok) throw new Error("HTTP " + response.status);
+  return await response.text();
+}
+
+async function syncWiki(){
+  $("notice").className="notice";
+  $("notice").textContent="🔄 Syncing the complete lists from the BitLife wiki…";
+
+  try{
+    const [achievementMD,ribbonMD] = await Promise.all([
+      fetchSource(SOURCES.achievements),
+      fetchSource(SOURCES.ribbons)
+    ]);
+
+    const achievements = parseAchievementTables(achievementMD);
+    const ribbons = parseRibbons(ribbonMD);
+
+    if(achievements.length < 100){
+      throw new Error(
+        "The achievement page returned an unexpectedly small dataset (" +
+        achievements.length + " items)."
+      );
+    }
+
+    if(ribbons.length < 20){
+      throw new Error(
+        "The ribbon page returned an unexpectedly small dataset (" +
+        ribbons.length + " items)."
+      );
+    }
+
+    state.achievements = achievements;
+    state.ribbons = ribbons;
+
+    populateCategories();
+
+    $("notice").textContent =
+      "✓ Wiki synced successfully — " +
+      achievements.length + " achievements and " +
+      ribbons.length + " ribbons loaded.";
+
+    render();
+  }catch(error){
+    console.error(error);
+
+    $("notice").className="notice error";
+    $("notice").innerHTML =
+      "⚠️ <strong>Could not sync the wiki.</strong><br>" +
+      "The tracker deliberately refuses to display a fake/incomplete list. " +
+      "Check your internet connection or try <strong>Sync Wiki</strong> again." +
+      "<br><small>" + clean(error.message) + "</small>";
+
+    $("content").innerHTML =
+      '<div class="empty">No incomplete dataset was loaded. Please try syncing again.</div>';
+  }
+}
+
+function populateCategories(){
+  const select = $("category");
+  const current = select.value;
+
+  const categories = [
+    ...new Set([
+      ...state.achievements.map(x=>x.category),
+      ...state.ribbons.map(x=>x.category)
+    ])
+  ].filter(Boolean).sort();
+
+  select.innerHTML =
+    '<option value="all">All categories</option>' +
+    categories.map(x =>
+      '<option value="'+escapeHTML(x)+'">'+escapeHTML(x)+'</option>'
+    ).join("");
+
+  if(categories.includes(current)) select.value=current;
+}
+
+function escapeHTML(s){
+  return String(s)
+    .replace(/&/g,"&amp;")
+    .replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;")
+    .replace(/"/g,"&quot;")
+    .replace(/'/g,"&#039;");
+}
+
+function matches(item){
+  const q = state.search.toLowerCase().trim();
+
+  const searchMatch =
+    !q ||
+    [
+      item.name,
+      item.description,
+      item.category,
+      item.difficulty,
+      item.ribbon
+    ].join(" ").toLowerCase().includes(q);
+
+  const catMatch =
+    state.category === "all" ||
+    item.category === state.category;
+
+  const diffMatch =
+    state.difficulty === "all" ||
+    item.difficulty === state.difficulty;
+
+  return searchMatch && catMatch && diffMatch;
+}
+
+function render(){
+  updateStats();
+
+  const source =
+    state.activeTab === "achievements"
+      ? state.achievements
+      : state.ribbons;
+
+  const filtered = source.filter(matches);
+
+  if(!filtered.length){
+    $("content").innerHTML =
+      '<div class="empty">🔎 Nothing matches your current filters.</div>';
+    return;
+  }
+
+  /*
+    Stable ordering:
+    - incomplete items retain original source order
+    - completed items are always moved to the bottom
+  */
+  const ordered = [...filtered].sort((a,b)=>{
+    const ad = !!state.checked[a.id];
+    const bd = !!state.checked[b.id];
+
+    if(ad !== bd) return ad ? 1 : -1;
+
+    return source.indexOf(a) - source.indexOf(b);
+  });
+
+  const groups = {};
+
+  ordered.forEach(item=>{
+    const key = item.category || "General";
+    if(!groups[key]) groups[key]=[];
+    groups[key].push(item);
+  });
+
+  $("content").innerHTML = Object.entries(groups)
+    .map(([category,items])=>{
+      const done = items.filter(x=>state.checked[x.id]).length;
+
+      return `
+        <section class="section">
+          <div class="section-title">
+            <h2>${escapeHTML(category)}</h2>
+            <div class="section-count">${done} / ${items.length} complete</div>
+          </div>
+
+          <div class="items">
+            ${items.map(renderItem).join("")}
+          </div>
+        </section>
+      `;
+    }).join("");
+
+  document.querySelectorAll(".checkbox").forEach(box=>{
+    box.addEventListener("change",()=>{
+      state.checked[box.dataset.id] = box.checked;
+      save();
+      render();
+    });
+  });
+}
+
+function renderItem(item){
+  const checked = !!state.checked[item.id];
+
+  const paid = paidInfo(item.purchase);
+  const rng = rngInfo(item.chance);
+
+  const difficulty =
+    item.difficulty &&
+    item.difficulty !== "Unknown"
+      ? `<span class="badge difficulty ${difficultyClass(item.difficulty)}">
+           ${escapeHTML(item.difficulty)}
+         </span>`
+      : "";
+
+  const paidBadge = paid
+    ? `<span class="badge paid">💳 PAID / BITIZEN</span>`
+    : "";
+
+  const rngBadge = rng
+    ? `<span class="badge rng">🎲 RNG</span>`
+    : "";
+
+  const ribbonBadge =
+    item.ribbon && !/^no$/i.test(item.ribbon)
+      ? `<span class="badge ribbon">🎗️ ${escapeHTML(item.ribbon)}</span>`
+      : "";
+
+  const purchaseText =
+    paid && item.purchase
+      ? `<span class="badge paid">Requires: ${escapeHTML(item.purchase)}</span>`
+      : "";
+
+  return `
+    <article class="item ${checked ? "done" : ""}"
+             data-diff="${escapeHTML(item.difficulty)}">
+
+      <input
+        class="checkbox"
+        type="checkbox"
+        data-id="${escapeHTML(item.id)}"
+        ${checked ? "checked" : ""}
+        aria-label="Mark ${escapeHTML(item.name)} complete">
+
+      <div class="item-main">
+        <div class="item-name">
+          <span class="emoji">${item.emoji}</span>
+          <span>${escapeHTML(item.name)}</span>
+        </div>
+
+        <div class="description">
+          ${escapeHTML(item.description)}
+        </div>
+
+        <div class="meta">
+          ${difficulty}
+          ${paidBadge}
+          ${purchaseText}
+          ${rngBadge}
+          ${ribbonBadge}
+        </div>
+      </div>
+
+      <div class="item-side">
+        ${item.type === "achievement" ? "ACHIEVEMENT" : "RIBBON"}
+      </div>
+    </article>
+  `;
+}
+
+function updateStats(){
+  const totalA = state.achievements.length;
+  const totalR = state.ribbons.length;
+
+  const doneA =
+    state.achievements.filter(x=>state.checked[x.id]).length;
+
+  const doneR =
+    state.ribbons.filter(x=>state.checked[x.id]).length;
+
+  const total = totalA + totalR;
+  const done = doneA + doneR;
+
+  const pct = total
+    ? Math.round((done / total) * 100)
+    : 0;
+
+  $("overallPct").textContent = pct + "%";
+  $("overallBar").style.width = pct + "%";
+
+  $("achievementCount").textContent =
+    doneA + " / " + totalA;
+
+  $("ribbonCount").textContent =
+    doneR + " / " + totalR;
+
+  $("achievementBar").style.width =
+    (totalA ? doneA/totalA*100 : 0) + "%";
+
+  $("ribbonBar").style.width =
+    (totalR ? doneR/totalR*100 : 0) + "%";
+
+  $("remaining").textContent =
+    total - done;
+
+  $("remainingBar").style.width =
+    (total ? (total-done)/total*100 : 0) + "%";
+}
+
+function resetProgress(){
+  if(!confirm(
+    "Reset ALL achievement and ribbon progress?\n\nThis cannot be undone."
+  )) return;
+
+  state.checked = {};
+  save();
+  render();
+}
+
+$("search").addEventListener("input",e=>{
+  state.search=e.target.value;
+  render();
+});
+
+$("category").addEventListener("change",e=>{
+  state.category=e.target.value;
+  render();
+});
+
+$("difficulty").addEventListener("change",e=>{
+  state.difficulty=e.target.value;
+  render();
+});
+
+$("sync").addEventListener("click",syncWiki);
+
+$("reset").addEventListener("click",resetProgress);
+
+document.querySelectorAll(".tab").forEach(tab=>{
+  tab.addEventListener("click",()=>{
+    document.querySelectorAll(".tab")
+      .forEach(x=>x.classList.remove("active"));
+
+    tab.classList.add("active");
+    state.activeTab=tab.dataset.tab;
+    render();
+  });
+});
+
+loadSaved();
+syncWiki();
+</script>
+</body>
+</html>
