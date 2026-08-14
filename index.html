@@ -432,7 +432,7 @@ button:disabled{
   color:#8ee8b5;
 }
 
-.notice.error{
+.error{
   background:rgba(255,93,115,.08);
   border-color:rgba(255,93,115,.25);
   color:#ffabb7;
@@ -558,9 +558,11 @@ footer a:hover{
 
 </header>
 
+
 <div id="notice" class="notice">
   🔄 Loading the complete achievement and ribbon lists from the BitLife wiki…
 </div>
+
 
 <section class="stats">
 
@@ -580,6 +582,7 @@ footer a:hover{
 
   </div>
 
+
   <div class="stat">
 
     <div class="stat-label">
@@ -596,6 +599,7 @@ footer a:hover{
 
   </div>
 
+
   <div class="stat">
 
     <div class="stat-label">
@@ -611,6 +615,7 @@ footer a:hover{
     </div>
 
   </div>
+
 
   <div class="stat">
 
@@ -630,6 +635,7 @@ footer a:hover{
 
 </section>
 
+
 <div class="controls">
 
   <input
@@ -638,9 +644,15 @@ footer a:hover{
     autocomplete="off"
   >
 
+
   <select id="category">
-    <option value="all">All categories</option>
+
+    <option value="all">
+      All categories
+    </option>
+
   </select>
+
 
   <select id="difficulty">
 
@@ -660,15 +672,18 @@ footer a:hover{
 
   </select>
 
+
   <button id="sync" class="primary">
     ↻ Sync Wiki
   </button>
+
 
   <button id="reset" class="danger">
     Reset Progress
   </button>
 
 </div>
+
 
 <div class="tabs">
 
@@ -688,6 +703,7 @@ footer a:hover{
 
 </div>
 
+
 <main id="content">
 
   <div class="loading">
@@ -699,6 +715,7 @@ footer a:hover{
   </div>
 
 </main>
+
 
 <footer>
 
@@ -720,7 +737,2359 @@ footer a:hover{
 
 </div>
 
-<script src="wiki.js"></script>
+
+<script>
+
+/*
+==========================================================
+ BITLIFE COMPLETION TRACKER
+==========================================================
+
+This version uses the Fandom MediaWiki API directly.
+
+Instead of:
+
+ GitHub Pages
+      ↓
+    Jina
+      ↓
+   Fandom
+
+we use:
+
+ GitHub Pages
+      ↓
+ Fandom MediaWiki API
+      ↓
+ rendered wiki HTML
+      ↓
+ local parser
+
+The API uses origin=* so it can be requested from
+a browser hosted on GitHub Pages.
+
+==========================================================
+*/
+
+
+const WIKI = "https://bitlife-life-simulator.fandom.com";
+
+
+const API = {
+
+  achievements:
+    WIKI +
+    "/api.php" +
+    "?action=parse" +
+    "&page=Achievements" +
+    "&prop=text" +
+    "&format=json" +
+    "&formatversion=2" +
+    "&origin=*",
+
+  ribbons:
+    WIKI +
+    "/api.php" +
+    "?action=parse" +
+    "&page=Ribbons" +
+    "&prop=text" +
+    "&format=json" +
+    "&formatversion=2" +
+    "&origin=*"
+
+};
+
+
+const STORAGE = "bitlife-completion-v4";
+
+
+let state = {
+
+  achievements: [],
+
+  ribbons: [],
+
+  checked: {},
+
+  activeTab: "achievements",
+
+  search: "",
+
+  category: "all",
+
+  difficulty: "all"
+
+};
+
+
+const $ = id => document.getElementById(id);
+
+
+/*
+==========================================================
+ STORAGE
+==========================================================
+*/
+
+
+function loadSaved(){
+
+  try{
+
+    const saved =
+      JSON.parse(
+        localStorage.getItem(STORAGE) || "{}"
+      );
+
+    state.checked =
+      saved.checked || {};
+
+  }catch(error){
+
+    console.warn(
+      "Could not load saved progress:",
+      error
+    );
+
+    state.checked = {};
+
+  }
+
+}
+
+
+function save(){
+
+  try{
+
+    localStorage.setItem(
+      STORAGE,
+      JSON.stringify({
+        checked: state.checked
+      })
+    );
+
+  }catch(error){
+
+    console.warn(
+      "Could not save progress:",
+      error
+    );
+
+  }
+
+}
+
+
+/*
+==========================================================
+ TEXT CLEANING
+==========================================================
+*/
+
+
+function clean(text){
+
+  if(text === null || text === undefined){
+    return "";
+  }
+
+  let value = String(text);
+
+  /*
+    Remove references.
+  */
+
+  value = value.replace(
+    /\[[0-9]+\]/g,
+    ""
+  );
+
+  /*
+    Remove wiki reference names.
+  */
+
+  value = value.replace(
+    /\[citation needed\]/gi,
+    ""
+  );
+
+  /*
+    Convert common HTML entities.
+  */
+
+  value = value
+    .replace(/&nbsp;/gi," ")
+    .replace(/&amp;/gi,"&")
+    .replace(/&quot;/gi,'"')
+    .replace(/&#039;/gi,"'")
+    .replace(/&lt;/gi,"<")
+    .replace(/&gt;/gi,">");
+
+  /*
+    Remove leftover markdown formatting.
+  */
+
+  value = value
+    .replace(/\*\*/g,"")
+    .replace(/__/g,"")
+    .replace(/`/g,"");
+
+  /*
+    Remove wiki template noise.
+  */
+
+  value = value.replace(
+    /\{\{[^{}]*\}\}/g,
+    ""
+  );
+
+  /*
+    Collapse whitespace.
+  */
+
+  value = value
+    .replace(/\s+/g," ")
+    .trim();
+
+  return value;
+}
+
+
+/*
+==========================================================
+ HTML TEXT EXTRACTION
+==========================================================
+*/
+
+
+function elementText(element){
+
+  if(!element){
+    return "";
+  }
+
+  /*
+    Clone so we can safely remove things that aren't
+    useful to the tracker.
+  */
+
+  const clone = element.cloneNode(true);
+
+  clone
+    .querySelectorAll(
+      "sup,style,script,noscript,.reference"
+    )
+    .forEach(el => el.remove());
+
+  /*
+    Convert <br> into spaces.
+  */
+
+  clone
+    .querySelectorAll("br")
+    .forEach(br => {
+      br.replaceWith(
+        document.createTextNode(" ")
+      );
+    });
+
+  return clean(
+    clone.textContent || ""
+  );
+}
+
+
+/*
+==========================================================
+ SLUG
+==========================================================
+*/
+
+
+function slug(text){
+
+  return clean(text)
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g,"-")
+    .replace(/^-|-$/g,"");
+
+}
+
+
+/*
+==========================================================
+ EMOJI
+==========================================================
+*/
+
+
+function emojiFor(name,type){
+
+  const n =
+    name.toLowerCase();
+
+  const rules = [
+
+    [/million|money|wealth|rich|loaded|billion|zillion|cash/,"💰"],
+
+    [/love|lover|marry|wedding|romance|heart/,"❤️"],
+
+    [/death|dead|kill|murder|assassin|execution|deadly/,"💀"],
+
+    [/animal|lion|gorilla|hippo|unicorn|leopard|horse|cat|dog|llama|zoo/,"🐾"],
+
+    [/school|student|academic|degree|university|college|professor/,"🎓"],
+
+    [/doctor|disease|plague|rabies|health|sick/,"🩺"],
+
+    [/crime|criminal|rob|steal|thief|burglar|mafia|cartel/,"🕵️"],
+
+    [/prison|jail|escape|bars|houdini/,"⛓️"],
+
+    [/military|general|admiral|veteran|army|navy|marine/,"🎖️"],
+
+    [/actor|movie|film|cinema|hollywood|theater|theatre/,"🎬"],
+
+    [/music|singer|album|song|concert|rapper|k-pop/,"🎵"],
+
+    [/social|influencer|followers|youtube|instagram|tiktok/,"📱"],
+
+    [/business|company|ceo|boss|career|job|work/,"💼"],
+
+    [/model|fashion|haute|designer/,"👗"],
+
+    [/royal|king|queen|monarch|prince|princess/,"👑"],
+
+    [/car|vehicle|bugatti|driver|pilot|boat/,"🚗"],
+
+    [/house|home|estate|property|real estate/,"🏠"],
+
+    [/casino|gamble|poker|slot|jackpot/,"🎰"],
+
+    [/vampire|blood|fang|coffin|undead/,"🧛"],
+
+    [/cult|commune|spiritual/,"🔮"],
+
+    [/spy|agency|operative|gadget/,"🕶️"],
+
+    [/fishing|fish|outdoor|hiking|camp/,"🎣"],
+
+    [/travel|country|globetrotter|emigrate/,"🌎"],
+
+    [/family|father|mother|child|children|parent/,"👨‍👩‍👧‍👦"],
+
+    [/party|club|rowdy|alcohol/,"🥳"],
+
+    [/plastic|surgery|barbie/,"💅"],
+
+    [/ribbon|medal|award|achievement/,"🏅"]
+
+  ];
+
+
+  for(const [regex,icon] of rules){
+
+    if(regex.test(n)){
+      return icon;
+    }
+
+  }
+
+
+  return type === "ribbon"
+    ? "🎗️"
+    : "🏆";
+
+}
+
+
+/*
+==========================================================
+ DIFFICULTY
+==========================================================
+*/
+
+
+function normalizeDifficulty(value){
+
+  const text =
+    clean(value);
+
+  if(!text){
+    return "Unknown";
+  }
+
+  const lower =
+    text.toLowerCase();
+
+  if(lower.includes("very easy")){
+    return "Very Easy";
+  }
+
+  if(lower === "easy"){
+    return "Easy";
+  }
+
+  if(lower === "moderate"){
+    return "Moderate";
+  }
+
+  if(lower === "medium"){
+    return "Medium";
+  }
+
+  if(lower === "very hard"){
+    return "Very Hard";
+  }
+
+  if(lower === "hard"){
+    return "Hard";
+  }
+
+  if(lower === "extreme"){
+    return "Extreme";
+  }
+
+  if(
+    lower.includes("luck") ||
+    lower.includes("random")
+  ){
+    return "Luck-based";
+  }
+
+  return text;
+}
+
+
+function difficultyClass(value){
+
+  return "diff-" +
+    clean(value)
+      .toLowerCase()
+      .replace(/\s+/g,"-");
+
+}
+
+
+/*
+==========================================================
+ PAID / RNG
+==========================================================
+*/
+
+
+function paidInfo(text){
+
+  const t =
+    clean(text).toLowerCase();
+
+  if(!t){
+    return false;
+  }
+
+  if(
+    /\byes\b/.test(t) &&
+    !/\bno\b/.test(t)
+  ){
+    return true;
+  }
+
+  return /bitizenship|god mode|in-app|paid|purchase/.test(t);
+}
+
+
+function rngInfo(text){
+
+  const t =
+    clean(text).toLowerCase();
+
+  return (
+    /\byes\b/.test(t) ||
+    /kind of/.test(t) ||
+    /luck/.test(t) ||
+    /chance/.test(t) ||
+    /random/.test(t)
+  );
+
+}
+
+
+/*
+==========================================================
+ HEADER NORMALIZATION
+==========================================================
+*/
+
+
+function normalizeHeader(text){
+
+  return clean(text)
+    .toLowerCase()
+    .replace(/\?/g,"")
+    .replace(/[^a-z0-9]+/g," ")
+    .trim();
+
+}
+
+
+function findColumn(headers,patterns){
+
+  for(let i=0;i<headers.length;i++){
+
+    const header =
+      normalizeHeader(headers[i]);
+
+    for(const pattern of patterns){
+
+      if(header.includes(pattern)){
+        return i;
+      }
+
+    }
+
+  }
+
+  return -1;
+
+}
+
+
+/*
+==========================================================
+ TABLE PARSER
+==========================================================
+*/
+
+
+function tableToRows(table){
+
+  const rows =
+    Array.from(
+      table.querySelectorAll("tr")
+    );
+
+  if(!rows.length){
+    return [];
+  }
+
+
+  /*
+    Find the most likely header row.
+
+    Fandom tables can contain captions or small
+    introductory rows before the real header.
+  */
+
+  let headerRowIndex = -1;
+
+
+  for(let i=0;i<Math.min(rows.length,5);i++){
+
+    const cells =
+      Array.from(
+        rows[i].querySelectorAll("th,td")
+      );
+
+    const text =
+      cells
+        .map(elementText)
+        .join(" ")
+        .toLowerCase();
+
+    if(
+      text.includes("achievement") ||
+      text.includes("description") ||
+      text.includes("difficulty")
+    ){
+
+      headerRowIndex = i;
+      break;
+
+    }
+
+  }
+
+
+  if(headerRowIndex === -1){
+    return [];
+  }
+
+
+  const headerCells =
+    Array.from(
+      rows[headerRowIndex]
+        .querySelectorAll("th,td")
+    );
+
+
+  const headers =
+    headerCells.map(elementText);
+
+
+  const output = [];
+
+
+  for(
+    let i=headerRowIndex+1;
+    i<rows.length;
+    i++
+  ){
+
+    const cells =
+      Array.from(
+        rows[i]
+          .querySelectorAll("th,td")
+      );
+
+
+    if(!cells.length){
+      continue;
+    }
+
+
+    output.push(
+      cells.map(elementText)
+    );
+
+  }
+
+
+  return {
+    headers,
+    rows:output
+  };
+
+}
+
+
+/*
+==========================================================
+ ACHIEVEMENT PARSER
+==========================================================
+*/
+
+
+function parseAchievementTables(html){
+
+  const parser =
+    new DOMParser();
+
+  const doc =
+    parser.parseFromString(
+      html,
+      "text/html"
+    );
+
+
+  const tables =
+    Array.from(
+      doc.querySelectorAll("table")
+    );
+
+
+  const output = [];
+
+
+  /*
+    Keep track of headings so achievements can be
+    grouped into wiki sections.
+  */
+
+  const headings =
+    Array.from(
+      doc.querySelectorAll(
+        "h2,h3,h4,h5"
+      )
+    );
+
+
+  function categoryForTable(table){
+
+    let best =
+      "General";
+
+    for(const heading of headings){
+
+      if(
+        heading.compareDocumentPosition(table) &
+        Node.DOCUMENT_POSITION_FOLLOWING
+      ){
+
+        const text =
+          elementText(heading);
+
+        if(
+          text &&
+          !/achievement|list of achievements|special careers|expansion packs/i.test(text)
+        ){
+
+          best = text;
+
+        }
+
+      }else{
+
+        break;
+
+      }
+
+    }
+
+    return best;
+
+  }
+
+
+  for(const table of tables){
+
+    const parsed =
+      tableToRows(table);
+
+
+    if(!parsed){
+      continue;
+    }
+
+
+    const headers =
+      parsed.headers;
+
+
+    /*
+      This table isn't an achievement table.
+    */
+
+    const achievementIndex =
+      findColumn(
+        headers,
+        ["achievement"]
+      );
+
+
+    if(achievementIndex === -1){
+      continue;
+    }
+
+
+    const descriptionIndex =
+      findColumn(
+        headers,
+        ["description"]
+      );
+
+
+    const purchaseIndex =
+      findColumn(
+        headers,
+        [
+          "in app",
+          "inapp",
+          "purchase",
+          "requires in app"
+        ]
+      );
+
+
+    const chanceIndex =
+      findColumn(
+        headers,
+        [
+          "chance based",
+          "chance"
+        ]
+      );
+
+
+    const difficultyIndex =
+      findColumn(
+        headers,
+        [
+          "difficulty"
+        ]
+      );
+
+
+    const ribbonIndex =
+      findColumn(
+        headers,
+        [
+          "can you also earn a ribbon",
+          "can also earn a ribbon",
+          "ribbon"
+        ]
+      );
+
+
+    const category =
+      categoryForTable(table);
+
+
+    for(const cells of parsed.rows){
+
+      /*
+        Ensure we have enough columns.
+      */
+
+      if(
+        achievementIndex >= cells.length
+      ){
+        continue;
+      }
+
+
+      let name =
+        clean(
+          cells[achievementIndex]
+        );
+
+
+      /*
+        Some wiki tables use [Input] in a
+        separate column.
+
+        Try to find the actual name if necessary.
+      */
+
+      if(
+        !name ||
+        /^input$/i.test(name)
+      ){
+
+        name =
+          cells.find(
+            x =>
+              x &&
+              !/^input$/i.test(x) &&
+              x.length > 1
+          ) || "";
+
+      }
+
+
+      /*
+        Remove common junk.
+      */
+
+      name =
+        name
+          .replace(/^\[Input\]\s*/i,"")
+          .trim();
+
+
+      if(
+        !name ||
+        /^achievement$/i.test(name) ||
+        /^input$/i.test(name) ||
+        name.length < 2
+      ){
+        continue;
+      }
+
+
+      const description =
+        descriptionIndex >= 0
+          ? clean(cells[descriptionIndex])
+          : "";
+
+
+      const purchase =
+        purchaseIndex >= 0
+          ? clean(cells[purchaseIndex])
+          : "";
+
+
+      const chance =
+        chanceIndex >= 0
+          ? clean(cells[chanceIndex])
+          : "";
+
+
+      const difficulty =
+        difficultyIndex >= 0
+          ? normalizeDifficulty(
+              cells[difficultyIndex]
+            )
+          : "Unknown";
+
+
+      const ribbon =
+        ribbonIndex >= 0
+          ? clean(cells[ribbonIndex])
+          : "";
+
+
+      const id =
+        "achievement:" +
+        slug(name);
+
+
+      /*
+        Avoid duplicate rows.
+      */
+
+      if(
+        output.some(
+          item => item.id === id
+        )
+      ){
+        continue;
+      }
+
+
+      output.push({
+
+        id,
+
+        type:"achievement",
+
+        name,
+
+        description:
+          description ||
+          "Description not provided on the source page.",
+
+        category:
+          category || "General",
+
+        purchase,
+
+        chance,
+
+        difficulty,
+
+        ribbon,
+
+        emoji:
+          emojiFor(
+            name,
+            "achievement"
+          )
+
+      });
+
+    }
+
+  }
+
+
+  return output;
+
+}
+
+
+/*
+==========================================================
+ RIBBON PARSER
+==========================================================
+*/
+
+
+function parseRibbons(html){
+
+  const parser =
+    new DOMParser();
+
+  const doc =
+    parser.parseFromString(
+      html,
+      "text/html"
+    );
+
+
+  const output = [];
+
+
+  /*
+    The Ribbons page can contain headings rather than
+    one consistent table.
+
+    Find headings that look like actual ribbon names.
+  */
+
+  const headings =
+    Array.from(
+      doc.querySelectorAll(
+        "h2,h3,h4,h5"
+      )
+    );
+
+
+  for(let i=0;i<headings.length;i++){
+
+    const heading =
+      headings[i];
+
+
+    const name =
+      clean(
+        elementText(heading)
+      );
+
+
+    if(
+      !name ||
+      /^(ribbons|regular ribbons|secret ribbons)$/i.test(name)
+    ){
+      continue;
+    }
+
+
+    /*
+      Ignore generic section headings.
+    */
+
+    if(
+      /^(contents|navigation|references|notes|external links)$/i.test(name)
+    ){
+      continue;
+    }
+
+
+    /*
+      Find content after the heading and before
+      the next heading.
+
+      We collect paragraphs and list items.
+    */
+
+    let description = "";
+
+    let difficulty = "Unknown";
+
+
+    let node =
+      heading.nextElementSibling;
+
+
+    let safety = 0;
+
+
+    while(
+      node &&
+      safety < 20
+    ){
+
+      safety++;
+
+
+      /*
+        Stop when another heading starts.
+      */
+
+      if(
+        /^H[2-5]$/.test(node.tagName)
+      ){
+        break;
+      }
+
+
+      const text =
+        elementText(node);
+
+
+      if(text){
+
+        const diff =
+          text.match(
+            /^Difficulty\s*:\s*(.+)$/i
+          );
+
+
+        if(diff){
+
+          difficulty =
+            normalizeDifficulty(
+              diff[1]
+            );
+
+        }else if(
+          !description &&
+          text.length > 10 &&
+          !/^the .+ ribbon\.?$/i.test(text)
+        ){
+
+          description =
+            text;
+
+        }
+
+      }
+
+
+      node =
+        node.nextElementSibling;
+
+    }
+
+
+    const id =
+      "ribbon:" +
+      slug(name);
+
+
+    if(
+      output.some(
+        item => item.id === id
+      )
+    ){
+      continue;
+    }
+
+
+    /*
+      Avoid accidentally treating page sections as
+      ribbons.
+    */
+
+    if(
+      name.length > 80
+    ){
+      continue;
+    }
+
+
+    output.push({
+
+      id,
+
+      type:"ribbon",
+
+      name,
+
+      description:
+        description ||
+        "Description not provided on the source page.",
+
+      category:"Ribbons",
+
+      purchase:"",
+
+      chance:
+        /luck|random|chance/i.test(
+          description
+        )
+          ? "Yes"
+          : "",
+
+      difficulty,
+
+      ribbon:"",
+
+      emoji:
+        emojiFor(
+          name,
+          "ribbon"
+        )
+
+    });
+
+  }
+
+
+  return output;
+
+}
+
+
+/*
+==========================================================
+ FANDOM API
+==========================================================
+*/
+
+
+async function fetchWikiPage(page){
+
+  const url =
+    API[page];
+
+
+  const controller =
+    new AbortController();
+
+
+  const timeout =
+    setTimeout(
+      () => controller.abort(),
+      20000
+    );
+
+
+  try{
+
+    const response =
+      await fetch(
+        url,
+        {
+          method:"GET",
+          cache:"no-store",
+          credentials:"omit",
+          signal:controller.signal,
+          headers:{
+            "Accept":"application/json"
+          }
+        }
+      );
+
+
+    if(!response.ok){
+
+      throw new Error(
+        "Fandom API returned HTTP " +
+        response.status
+      );
+
+    }
+
+
+    const data =
+      await response.json();
+
+
+    if(
+      data.error
+    ){
+
+      throw new Error(
+        data.error.info ||
+        data.error.code ||
+        "Fandom API returned an error."
+      );
+
+    }
+
+
+    /*
+      formatversion=2 gives:
+
+      data.parse.text
+
+      as a string.
+
+      Older API versions can return:
+
+      data.parse.text["*"]
+
+    */
+
+    let html = "";
+
+
+    if(
+      data.parse &&
+      typeof data.parse.text === "string"
+    ){
+
+      html =
+        data.parse.text;
+
+    }else if(
+      data.parse &&
+      data.parse.text &&
+      typeof data.parse.text["*"] === "string"
+    ){
+
+      html =
+        data.parse.text["*"];
+
+    }
+
+
+    if(!html){
+
+      throw new Error(
+        "Fandom API returned no page HTML."
+      );
+
+    }
+
+
+    return html;
+
+  }catch(error){
+
+    if(
+      error.name === "AbortError"
+    ){
+
+      throw new Error(
+        "Fandom request timed out after 20 seconds."
+      );
+
+    }
+
+
+    throw error;
+
+  }finally{
+
+    clearTimeout(timeout);
+
+  }
+
+}
+
+
+/*
+==========================================================
+ FALLBACK PAGE FETCH
+==========================================================
+
+This is only a secondary attempt.
+
+The API is preferred because it gives us the wiki
+content without the normal Fandom page shell.
+==========================================================
+*/
+
+
+async function fetchNormalPage(page){
+
+  const url =
+    WIKI +
+    "/wiki/" +
+    encodeURIComponent(page);
+
+
+  const response =
+    await fetch(
+      url,
+      {
+        cache:"no-store",
+        credentials:"omit"
+      }
+    );
+
+
+  if(!response.ok){
+
+    throw new Error(
+      "Normal Fandom page returned HTTP " +
+      response.status
+    );
+
+  }
+
+
+  return await response.text();
+
+}
+
+
+/*
+==========================================================
+ SYNC WIKI
+==========================================================
+*/
+
+
+async function syncWiki(){
+
+  const syncButton =
+    $("sync");
+
+
+  syncButton.disabled = true;
+
+
+  $("notice").className =
+    "notice";
+
+
+  $("notice").innerHTML =
+    "🔄 Connecting to the BitLife wiki…";
+
+
+  $("content").innerHTML =
+    `
+      <div class="loading">
+        <div class="spinner"></div>
+        Reading the BitLife wiki…
+      </div>
+    `;
+
+
+  try{
+
+    let achievementHTML;
+    let ribbonHTML;
+
+
+    /*
+      Fetch both pages independently.
+
+      This makes it possible to identify which page
+      failed rather than just getting a generic Promise
+      rejection.
+    */
+
+    try{
+
+      achievementHTML =
+        await fetchWikiPage(
+          "achievements"
+        );
+
+    }catch(error){
+
+      console.error(
+        "Achievements API error:",
+        error
+      );
+
+      /*
+        Try the normal page as a fallback.
+      */
+
+      try{
+
+        achievementHTML =
+          await fetchNormalPage(
+            "Achievements"
+          );
+
+      }catch(fallbackError){
+
+        throw new Error(
+          "Could not load the Achievements page. " +
+          error.message
+        );
+
+      }
+
+    }
+
+
+    try{
+
+      ribbonHTML =
+        await fetchWikiPage(
+          "ribbons"
+        );
+
+    }catch(error){
+
+      console.error(
+        "Ribbons API error:",
+        error
+      );
+
+
+      try{
+
+        ribbonHTML =
+          await fetchNormalPage(
+            "Ribbons"
+          );
+
+      }catch(fallbackError){
+
+        throw new Error(
+          "Could not load the Ribbons page. " +
+          error.message
+        );
+
+      }
+
+    }
+
+
+    /*
+      Parse the downloaded pages.
+    */
+
+    const achievements =
+      parseAchievementTables(
+        achievementHTML
+      );
+
+
+    const ribbons =
+      parseRibbons(
+        ribbonHTML
+      );
+
+
+    console.log(
+      "Wiki sync results:",
+      {
+        achievements:
+          achievements.length,
+
+        ribbons:
+          ribbons.length
+      }
+    );
+
+
+    /*
+      Do not replace the current data with an obviously
+      broken result.
+
+      The achievement page should contain a large number
+      of entries. We use a conservative sanity check.
+    */
+
+    if(
+      achievements.length < 50
+    ){
+
+      throw new Error(
+        "The wiki was reached, but the Achievements parser " +
+        "only found " +
+        achievements.length +
+        " items. The wiki structure may have changed."
+      );
+
+    }
+
+
+    if(
+      ribbons.length < 10
+    ){
+
+      throw new Error(
+        "The wiki was reached, but the Ribbons parser " +
+        "only found " +
+        ribbons.length +
+        " items. The wiki structure may have changed."
+      );
+
+    }
+
+
+    /*
+      Success.
+    */
+
+    state.achievements =
+      achievements;
+
+    state.ribbons =
+      ribbons;
+
+
+    populateCategories();
+
+
+    $("notice").className =
+      "notice success";
+
+
+    $("notice").innerHTML =
+      "✓ Wiki synced successfully — " +
+      achievements.length +
+      " achievements and " +
+      ribbons.length +
+      " ribbons loaded.";
+
+
+    render();
+
+
+  }catch(error){
+
+    console.error(
+      "Wiki sync failed:",
+      error
+    );
+
+
+    $("notice").className =
+      "notice error";
+
+
+    $("notice").innerHTML =
+      `
+        ⚠️ <strong>Could not sync the wiki.</strong>
+
+        <br>
+
+        The tracker did not replace your data with an
+        incomplete dataset.
+
+        <small>
+          ${escapeHTML(
+            error.message ||
+            "Unknown error"
+          )}
+        </small>
+
+        <small>
+          Open your browser console with F12 → Console
+          if you need more technical information.
+        </small>
+      `;
+
+
+    /*
+      If we have old data, continue displaying it.
+
+      This is important because the user may already
+      have synced successfully before.
+    */
+
+    if(
+      state.achievements.length ||
+      state.ribbons.length
+    ){
+
+      render();
+
+    }else{
+
+      $("content").innerHTML =
+        `
+          <div class="empty">
+
+            ⚠️ The wiki could not be loaded.
+
+            <br><br>
+
+            Press <strong>Sync Wiki</strong> to try again.
+
+          </div>
+        `;
+
+    }
+
+  }finally{
+
+    syncButton.disabled = false;
+
+  }
+
+}
+
+
+/*
+==========================================================
+ CATEGORIES
+==========================================================
+*/
+
+
+function populateCategories(){
+
+  const select =
+    $("category");
+
+
+  const current =
+    select.value;
+
+
+  const categories =
+    [
+      ...new Set([
+        ...state.achievements.map(
+          item => item.category
+        ),
+
+        ...state.ribbons.map(
+          item => item.category
+        )
+      ])
+    ]
+      .filter(Boolean)
+      .sort(
+        (a,b) =>
+          a.localeCompare(b)
+      );
+
+
+  select.innerHTML =
+    `
+      <option value="all">
+        All categories
+      </option>
+    ` +
+    categories
+      .map(
+        category =>
+          `
+            <option value="${escapeHTML(category)}">
+              ${escapeHTML(category)}
+            </option>
+          `
+      )
+      .join("");
+
+
+  if(
+    categories.includes(current)
+  ){
+
+    select.value =
+      current;
+
+  }else{
+
+    state.category =
+      "all";
+
+  }
+
+}
+
+
+/*
+==========================================================
+ ESCAPE HTML
+==========================================================
+*/
+
+
+function escapeHTML(value){
+
+  return String(value ?? "")
+    .replace(/&/g,"&amp;")
+    .replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;")
+    .replace(/"/g,"&quot;")
+    .replace(/'/g,"&#039;");
+
+}
+
+
+/*
+==========================================================
+ FILTERING
+==========================================================
+*/
+
+
+function matches(item){
+
+  const q =
+    state.search
+      .toLowerCase()
+      .trim();
+
+
+  const searchable = [
+
+    item.name,
+
+    item.description,
+
+    item.category,
+
+    item.difficulty,
+
+    item.ribbon,
+
+    item.purchase,
+
+    item.chance
+
+  ]
+    .join(" ")
+    .toLowerCase();
+
+
+  const searchMatch =
+    !q ||
+    searchable.includes(q);
+
+
+  const categoryMatch =
+    state.category === "all" ||
+    item.category ===
+      state.category;
+
+
+  const difficultyMatch =
+    state.difficulty === "all" ||
+    item.difficulty ===
+      state.difficulty;
+
+
+  return (
+    searchMatch &&
+    categoryMatch &&
+    difficultyMatch
+  );
+
+}
+
+
+/*
+==========================================================
+ RENDER
+==========================================================
+*/
+
+
+function render(){
+
+  updateStats();
+
+
+  const source =
+    state.activeTab === "achievements"
+      ? state.achievements
+      : state.ribbons;
+
+
+  const filtered =
+    source.filter(matches);
+
+
+  if(!filtered.length){
+
+    $("content").innerHTML =
+      `
+        <div class="empty">
+          🔎 Nothing matches your current filters.
+        </div>
+      `;
+
+    return;
+
+  }
+
+
+  /*
+    Incomplete items first.
+    Completed items go to the bottom.
+  */
+
+  const ordered =
+    [...filtered].sort(
+      (a,b) => {
+
+        const aDone =
+          !!state.checked[a.id];
+
+        const bDone =
+          !!state.checked[b.id];
+
+
+        if(
+          aDone !== bDone
+        ){
+
+          return aDone
+            ? 1
+            : -1;
+
+        }
+
+
+        return (
+          source.indexOf(a) -
+          source.indexOf(b)
+        );
+
+      }
+    );
+
+
+  const groups = {};
+
+
+  ordered.forEach(item => {
+
+    const key =
+      item.category ||
+      "General";
+
+
+    if(!groups[key]){
+      groups[key] = [];
+    }
+
+
+    groups[key].push(item);
+
+  });
+
+
+  $("content").innerHTML =
+    Object.entries(groups)
+      .map(
+        ([category,items]) => {
+
+          const done =
+            items.filter(
+              item =>
+                state.checked[item.id]
+            ).length;
+
+
+          return `
+            <section class="section">
+
+              <div class="section-title">
+
+                <h2>
+                  ${escapeHTML(category)}
+                </h2>
+
+                <div class="section-count">
+                  ${done} / ${items.length}
+                  complete
+                </div>
+
+              </div>
+
+
+              <div class="items">
+
+                ${items
+                  .map(renderItem)
+                  .join("")}
+
+              </div>
+
+            </section>
+          `;
+
+        }
+      )
+      .join("");
+
+
+  /*
+    Checkbox handlers.
+  */
+
+  document
+    .querySelectorAll(".checkbox")
+    .forEach(box => {
+
+      box.addEventListener(
+        "change",
+        () => {
+
+          state.checked[
+            box.dataset.id
+          ] = box.checked;
+
+
+          save();
+
+          render();
+
+        }
+      );
+
+    });
+
+}
+
+
+/*
+==========================================================
+ ITEM
+==========================================================
+*/
+
+
+function renderItem(item){
+
+  const checked =
+    !!state.checked[item.id];
+
+
+  const paid =
+    paidInfo(
+      item.purchase
+    );
+
+
+  const rng =
+    rngInfo(
+      item.chance
+    );
+
+
+  const difficulty =
+    item.difficulty &&
+    item.difficulty !== "Unknown"
+
+      ? `
+        <span
+          class="badge difficulty ${difficultyClass(item.difficulty)}"
+        >
+          ${escapeHTML(
+            item.difficulty
+          )}
+        </span>
+      `
+
+      : "";
+
+
+  const paidBadge =
+    paid
+
+      ? `
+        <span class="badge paid">
+          💳 PAID / BITIZEN
+        </span>
+      `
+
+      : "";
+
+
+  const rngBadge =
+    rng
+
+      ? `
+        <span class="badge rng">
+          🎲 RNG
+        </span>
+      `
+
+      : "";
+
+
+  const ribbonBadge =
+    item.ribbon &&
+    !/^no$/i.test(item.ribbon)
+
+      ? `
+        <span class="badge ribbon">
+          🎗️ ${escapeHTML(
+            item.ribbon
+          )}
+        </span>
+      `
+
+      : "";
+
+
+  const purchaseText =
+    paid &&
+    item.purchase
+
+      ? `
+        <span class="badge paid">
+          Requires:
+          ${escapeHTML(
+            item.purchase
+          )}
+        </span>
+      `
+
+      : "";
+
+
+  return `
+    <article
+      class="item ${checked ? "done" : ""}"
+      data-diff="${escapeHTML(
+        item.difficulty
+      )}"
+    >
+
+      <input
+        class="checkbox"
+        type="checkbox"
+        data-id="${escapeHTML(
+          item.id
+        )}"
+        ${checked ? "checked" : ""}
+        aria-label="Mark ${escapeHTML(
+          item.name
+        )} complete"
+      >
+
+
+      <div class="item-main">
+
+        <div class="item-name">
+
+          <span class="emoji">
+            ${item.emoji}
+          </span>
+
+          <span>
+            ${escapeHTML(
+              item.name
+            )}
+          </span>
+
+        </div>
+
+
+        <div class="description">
+          ${escapeHTML(
+            item.description
+          )}
+        </div>
+
+
+        <div class="meta">
+
+          ${difficulty}
+
+          ${paidBadge}
+
+          ${purchaseText}
+
+          ${rngBadge}
+
+          ${ribbonBadge}
+
+        </div>
+
+      </div>
+
+
+      <div class="item-side">
+
+        ${
+          item.type === "achievement"
+            ? "ACHIEVEMENT"
+            : "RIBBON"
+        }
+
+      </div>
+
+    </article>
+  `;
+
+}
+
+
+/*
+==========================================================
+ STATISTICS
+==========================================================
+*/
+
+
+function updateStats(){
+
+  const totalA =
+    state.achievements.length;
+
+
+  const totalR =
+    state.ribbons.length;
+
+
+  const doneA =
+    state.achievements.filter(
+      item =>
+        state.checked[item.id]
+    ).length;
+
+
+  const doneR =
+    state.ribbons.filter(
+      item =>
+        state.checked[item.id]
+    ).length;
+
+
+  const total =
+    totalA + totalR;
+
+
+  const done =
+    doneA + doneR;
+
+
+  const pct =
+    total
+      ? Math.round(
+          done / total * 100
+        )
+      : 0;
+
+
+  $("overallPct").textContent =
+    pct + "%";
+
+
+  $("overallBar").style.width =
+    pct + "%";
+
+
+  $("achievementCount").textContent =
+    doneA +
+    " / " +
+    totalA;
+
+
+  $("ribbonCount").textContent =
+    doneR +
+    " / " +
+    totalR;
+
+
+  $("achievementBar").style.width =
+    (
+      totalA
+        ? doneA / totalA * 100
+        : 0
+    ) + "%";
+
+
+  $("ribbonBar").style.width =
+    (
+      totalR
+        ? doneR / totalR * 100
+        : 0
+    ) + "%";
+
+
+  $("remaining").textContent =
+    total - done;
+
+
+  $("remainingBar").style.width =
+    (
+      total
+        ? (total - done) /
+          total *
+          100
+        : 0
+    ) + "%";
+
+}
+
+
+/*
+==========================================================
+ RESET
+==========================================================
+*/
+
+
+function resetProgress(){
+
+  if(
+    !confirm(
+      "Reset ALL achievement and ribbon progress?\n\n" +
+      "This cannot be undone."
+    )
+  ){
+    return;
+  }
+
+
+  state.checked = {};
+
+
+  save();
+
+
+  render();
+
+}
+
+
+/*
+==========================================================
+ EVENTS
+==========================================================
+*/
+
+
+$("search").addEventListener(
+  "input",
+  event => {
+
+    state.search =
+      event.target.value;
+
+    render();
+
+  }
+);
+
+
+$("category").addEventListener(
+  "change",
+  event => {
+
+    state.category =
+      event.target.value;
+
+    render();
+
+  }
+);
+
+
+$("difficulty").addEventListener(
+  "change",
+  event => {
+
+    state.difficulty =
+      event.target.value;
+
+    render();
+
+  }
+);
+
+
+$("sync").addEventListener(
+  "click",
+  syncWiki
+);
+
+
+$("reset").addEventListener(
+  "click",
+  resetProgress
+);
+
+
+document
+  .querySelectorAll(".tab")
+  .forEach(tab => {
+
+    tab.addEventListener(
+      "click",
+      () => {
+
+        document
+          .querySelectorAll(".tab")
+          .forEach(
+            x =>
+              x.classList.remove(
+                "active"
+              )
+          );
+
+
+        tab.classList.add(
+          "active"
+        );
+
+
+        state.activeTab =
+          tab.dataset.tab;
+
+
+        render();
+
+      }
+    );
+
+  });
+
+
+/*
+==========================================================
+ START
+==========================================================
+*/
+
+
+loadSaved();
+
+syncWiki();
+
+</script>
 
 </body>
 </html>
