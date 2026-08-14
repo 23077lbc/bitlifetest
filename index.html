@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
+
 <title>BitLife — Complete Achievement & Ribbon Checklist</title>
 
 <style>
@@ -23,7 +24,9 @@
   --shadow:0 18px 50px rgba(0,0,0,.35);
 }
 
-*{box-sizing:border-box}
+*{
+  box-sizing:border-box;
+}
 
 body{
   margin:0;
@@ -36,7 +39,9 @@ body{
   min-height:100vh;
 }
 
-button,input,select{font:inherit}
+button,input,select{
+  font:inherit;
+}
 
 .app{
   max-width:1450px;
@@ -160,6 +165,12 @@ button:hover{
   border-color:#514b73;
 }
 
+button:disabled{
+  opacity:.55;
+  cursor:not-allowed;
+  transform:none;
+}
+
 .primary{
   background:linear-gradient(135deg,#7052ed,#925ce8);
   border-color:transparent;
@@ -232,7 +243,6 @@ button:hover{
 
 .item.done{
   opacity:.52;
-  order:999999;
   background:#0d1119;
 }
 
@@ -329,13 +339,15 @@ button:hover{
   color:#fff;
 }
 
-.diff-very-easy,.diff-easy{
+.diff-very-easy,
+.diff-easy{
   background:rgba(53,208,127,.11);
   border-color:rgba(53,208,127,.25);
   color:#75e9a8;
 }
 
-.diff-medium,.diff-moderate{
+.diff-medium,
+.diff-moderate{
   background:rgba(244,201,93,.1);
   border-color:rgba(244,201,93,.25);
   color:#f7d779;
@@ -347,7 +359,8 @@ button:hover{
   color:#ffad70;
 }
 
-.diff-very-hard,.diff-extreme{
+.diff-very-hard,
+.diff-extreme{
   background:rgba(255,93,115,.11);
   border-color:rgba(255,93,115,.25);
   color:#ff8293;
@@ -357,6 +370,12 @@ button:hover{
   background:rgba(168,139,250,.12);
   border-color:rgba(168,139,250,.25);
   color:#c7b5ff;
+}
+
+.diff-unknown{
+  background:rgba(146,155,173,.1);
+  border-color:rgba(146,155,173,.2);
+  color:#aeb5c5;
 }
 
 .item-side{
@@ -390,7 +409,11 @@ button:hover{
   margin:0 auto 15px;
 }
 
-@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes spin{
+  to{
+    transform:rotate(360deg);
+  }
+}
 
 .notice{
   background:rgba(244,201,93,.08);
@@ -403,10 +426,23 @@ button:hover{
   margin-bottom:16px;
 }
 
-.error{
+.notice.success{
+  background:rgba(53,208,127,.08);
+  border-color:rgba(53,208,127,.25);
+  color:#8ee8b5;
+}
+
+.notice.error{
   background:rgba(255,93,115,.08);
   border-color:rgba(255,93,115,.25);
   color:#ffabb7;
+}
+
+.notice small{
+  display:block;
+  margin-top:6px;
+  opacity:.8;
+  word-break:break-word;
 }
 
 footer{
@@ -417,48 +453,109 @@ footer{
   line-height:1.6;
 }
 
+footer a{
+  color:#a78bfa;
+  text-decoration:none;
+}
+
+footer a:hover{
+  text-decoration:underline;
+}
+
 @media(max-width:900px){
-  .stats{grid-template-columns:repeat(2,1fr)}
-  .controls{grid-template-columns:1fr 1fr}
+
+  .stats{
+    grid-template-columns:repeat(2,1fr);
+  }
+
+  .controls{
+    grid-template-columns:1fr 1fr;
+  }
 }
 
 @media(max-width:600px){
-  .app{padding:18px 12px 40px}
-  .stats{grid-template-columns:1fr 1fr}
-  .stat-value{font-size:21px}
+
+  .app{
+    padding:18px 12px 40px;
+  }
+
+  .stats{
+    grid-template-columns:1fr 1fr;
+  }
+
+  .stat-value{
+    font-size:21px;
+  }
+
   .controls{
     position:static;
     grid-template-columns:1fr;
   }
+
   .item{
     grid-template-columns:auto 1fr;
   }
-  .item-side{display:none}
+
+  .item-side{
+    display:none;
+  }
 }
 
-/* Difficulty accent lines */
-.item[data-diff="Very Easy"]{border-left:3px solid #35d07f}
-.item[data-diff="Easy"]{border-left:3px solid #58dc92}
+.item[data-diff="Very Easy"]{
+  border-left:3px solid #35d07f;
+}
+
+.item[data-diff="Easy"]{
+  border-left:3px solid #58dc92;
+}
+
 .item[data-diff="Medium"],
-.item[data-diff="Moderate"]{border-left:3px solid #f4c95d}
-.item[data-diff="Hard"]{border-left:3px solid #ff9650}
-.item[data-diff="Very Hard"]{border-left:3px solid #ff6f69}
-.item[data-diff="Extreme"]{border-left:3px solid #ff4f6c}
-.item[data-diff="Luck-based"]{border-left:3px solid #a78bfa}
+.item[data-diff="Moderate"]{
+  border-left:3px solid #f4c95d;
+}
+
+.item[data-diff="Hard"]{
+  border-left:3px solid #ff9650;
+}
+
+.item[data-diff="Very Hard"]{
+  border-left:3px solid #ff6f69;
+}
+
+.item[data-diff="Extreme"]{
+  border-left:3px solid #ff4f6c;
+}
+
+.item[data-diff="Luck-based"]{
+  border-left:3px solid #a78bfa;
+}
+
+.item[data-diff="Unknown"]{
+  border-left:3px solid #555d70;
+}
 </style>
 </head>
 
 <body>
+
 <div class="app">
 
 <header>
+
   <div class="brand">
+
     <div class="logo">🎮</div>
+
     <div>
       <h1>BitLife Completion Tracker</h1>
-      <p class="subtitle">Every achievement & ribbon • synced from the BitLife wiki</p>
+
+      <p class="subtitle">
+        Every achievement & ribbon • synced from the BitLife wiki
+      </p>
     </div>
+
   </div>
+
 </header>
 
 <div id="notice" class="notice">
@@ -466,40 +563,91 @@ footer{
 </div>
 
 <section class="stats">
+
   <div class="stat">
-    <div class="stat-label">Overall Completion</div>
-    <div class="stat-value" id="overallPct">0%</div>
-    <div class="progress"><div id="overallBar"></div></div>
+
+    <div class="stat-label">
+      Overall Completion
+    </div>
+
+    <div class="stat-value" id="overallPct">
+      0%
+    </div>
+
+    <div class="progress">
+      <div id="overallBar"></div>
+    </div>
+
   </div>
 
   <div class="stat">
-    <div class="stat-label">Achievements</div>
-    <div class="stat-value" id="achievementCount">0 / 0</div>
-    <div class="progress"><div id="achievementBar"></div></div>
+
+    <div class="stat-label">
+      Achievements
+    </div>
+
+    <div class="stat-value" id="achievementCount">
+      0 / 0
+    </div>
+
+    <div class="progress">
+      <div id="achievementBar"></div>
+    </div>
+
   </div>
 
   <div class="stat">
-    <div class="stat-label">Ribbons</div>
-    <div class="stat-value" id="ribbonCount">0 / 0</div>
-    <div class="progress"><div id="ribbonBar"></div></div>
+
+    <div class="stat-label">
+      Ribbons
+    </div>
+
+    <div class="stat-value" id="ribbonCount">
+      0 / 0
+    </div>
+
+    <div class="progress">
+      <div id="ribbonBar"></div>
+    </div>
+
   </div>
 
   <div class="stat">
-    <div class="stat-label">Remaining</div>
-    <div class="stat-value" id="remaining">0</div>
-    <div class="progress"><div id="remainingBar"></div></div>
+
+    <div class="stat-label">
+      Remaining
+    </div>
+
+    <div class="stat-value" id="remaining">
+      0
+    </div>
+
+    <div class="progress">
+      <div id="remainingBar"></div>
+    </div>
+
   </div>
+
 </section>
 
 <div class="controls">
-  <input id="search" placeholder="🔎 Search achievements, ribbons, descriptions…">
+
+  <input
+    id="search"
+    placeholder="🔎 Search achievements, ribbons, descriptions…"
+    autocomplete="off"
+  >
 
   <select id="category">
     <option value="all">All categories</option>
   </select>
 
   <select id="difficulty">
-    <option value="all">All difficulties</option>
+
+    <option value="all">
+      All difficulties
+    </option>
+
     <option>Very Easy</option>
     <option>Easy</option>
     <option>Medium</option>
@@ -508,678 +656,71 @@ footer{
     <option>Very Hard</option>
     <option>Extreme</option>
     <option>Luck-based</option>
+    <option>Unknown</option>
+
   </select>
 
-  <button id="sync" class="primary">↻ Sync Wiki</button>
-  <button id="reset" class="danger">Reset Progress</button>
+  <button id="sync" class="primary">
+    ↻ Sync Wiki
+  </button>
+
+  <button id="reset" class="danger">
+    Reset Progress
+  </button>
+
 </div>
 
 <div class="tabs">
-  <button class="tab active" data-tab="achievements">🏆 Achievements</button>
-  <button class="tab" data-tab="ribbons">🎗️ Ribbons</button>
+
+  <button
+    class="tab active"
+    data-tab="achievements"
+  >
+    🏆 Achievements
+  </button>
+
+  <button
+    class="tab"
+    data-tab="ribbons"
+  >
+    🎗️ Ribbons
+  </button>
+
 </div>
 
 <main id="content">
+
   <div class="loading">
+
     <div class="spinner"></div>
+
     Reading the wiki…
+
   </div>
+
 </main>
 
 <footer>
-  Data source: BitLife - Life Simulator Wiki on Fandom.<br>
+
+  Data source:
+  <a
+    href="https://bitlife-life-simulator.fandom.com/wiki/Achievements"
+    target="_blank"
+    rel="noopener"
+  >
+    BitLife - Life Simulator Wiki
+  </a>
+  on Fandom.
+
+  <br>
+
   Progress is stored locally in this browser and is never uploaded.
+
 </footer>
 
 </div>
 
-<script>
-/*
-  BitLife Completion Tracker
-  --------------------------
-  The wiki currently changes over time. Rather than embedding a stale
-  400+ item list, this tracker downloads the two supplied wiki pages and
-  extracts their tables/headings.
+<script src="wiki.js"></script>
 
-  This means newly-added achievements can appear after pressing "Sync Wiki".
-*/
-
-const HOST = "bitlife-life-simulator.fandom.com";
-
-const SOURCES = {
-  achievements:
-    "https://r.jina.ai/http://" + HOST + "/wiki/Achievements",
-  ribbons:
-    "https://r.jina.ai/http://" + HOST + "/wiki/Ribbons"
-};
-
-const STORAGE = "bitlife-completion-v3";
-
-let state = {
-  achievements: [],
-  ribbons: [],
-  checked: {},
-  activeTab: "achievements",
-  search: "",
-  category: "all",
-  difficulty: "all"
-};
-
-const $ = id => document.getElementById(id);
-
-function loadSaved(){
-  try{
-    const saved = JSON.parse(localStorage.getItem(STORAGE) || "{}");
-    state.checked = saved.checked || {};
-  }catch(e){
-    state.checked = {};
-  }
-}
-
-function save(){
-  localStorage.setItem(STORAGE, JSON.stringify({
-    checked: state.checked
-  }));
-}
-
-function clean(text){
-  return String(text || "")
-    .replace(/<[^>]*>/g,"")
-    .replace(/\[.*?\]/g,"")
-    .replace(/&nbsp;/g," ")
-    .replace(/\*\*/g,"")
-    .replace(/`/g,"")
-    .replace(/\s+/g," ")
-    .trim();
-}
-
-function slug(text){
-  return clean(text)
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g,"-")
-    .replace(/^-|-$/g,"");
-}
-
-function emojiFor(name, type){
-  const n = name.toLowerCase();
-
-  const rules = [
-    [/million|money|wealth|rich|loaded|billion|zillion|cash/,"💰"],
-    [/love|lover|marry|wedding|romance|heart/,"❤️"],
-    [/death|dead|kill|murder|assassin|execution|deadly/,"💀"],
-    [/animal|lion|gorilla|hippo|unicorn|leopard|horse|cat|dog|llama|zoo/,"🐾"],
-    [/school|student|academic|degree|university|college|professor/,"🎓"],
-    [/doctor|disease|plague|rabies|health|sick/,"🩺"],
-    [/crime|criminal|rob|steal|thief|burglar|mafia|cartel|crime/,"🕵️"],
-    [/prison|jail|escape|bars|houdini/,"⛓️"],
-    [/military|general|admiral|veteran|army|navy|marine/,"🎖️"],
-    [/actor|movie|film|cinema|hollywood|theater|theatre/,"🎬"],
-    [/music|singer|album|song|concert|rapper|k-pop/,"🎵"],
-    [/social|influencer|followers|youtube|instagram|tiktok/,"📱"],
-    [/business|company|ceo|boss|career|job|work/,"💼"],
-    [/model|fashion|haute|designer/,"👗"],
-    [/royal|king|queen|monarch|prince|princess/,"👑"],
-    [/car|vehicle|bugatti|driver|pilot|boat/,"🚗"],
-    [/house|home|estate|property|real estate/,"🏠"],
-    [/casino|gamble|poker|slot|jackpot/,"🎰"],
-    [/vampire|blood|fang|coffin|undead/,"🧛"],
-    [/cult|commune|spiritual/,"🔮"],
-    [/spy|agency|operative|gadget/,"🕶️"],
-    [/fishing|fish|outdoor|hiking|camp/,"🎣"],
-    [/travel|country|globetrotter|emigrate/,"🌎"],
-    [/family|father|mother|child|children|parent/,"👨‍👩‍👧‍👦"],
-    [/party|club|rowdy|alcohol/,"🥳"],
-    [/plastic|surgery|barbie/,"💅"],
-    [/ribbon|medal|award|achievement/,"🏅"]
-  ];
-
-  for(const [regex,icon] of rules)
-    if(regex.test(n)) return icon;
-
-  return type === "ribbon" ? "🎗️" : "🏆";
-}
-
-function difficultyClass(d){
-  return "diff-" + clean(d).toLowerCase().replace(/\s+/g,"-");
-}
-
-function paidInfo(text){
-  const t = clean(text).toLowerCase();
-
-  if(
-    /bitizenship|god mode|in-app|outdoor|vampire mode|paid|yes/.test(t)
-    && !/^no$/.test(t)
-  ){
-    return true;
-  }
-
-  return false;
-}
-
-function rngInfo(text){
-  return /yes|kind of|tba|yes\/no|luck|chance/i.test(clean(text));
-}
-
-function parseAchievementTables(md){
-  const lines = md.split(/\r?\n/);
-  const output = [];
-  let category = "General";
-  let header = null;
-
-  for(let i=0;i<lines.length;i++){
-    const line = lines[i].trim();
-
-    const heading = line.match(/^#{2,4}\s+(.+?)\[\]\s*$/);
-    if(heading){
-      const h = clean(heading[1]);
-      if(
-        h &&
-        !/Achievements|List of Achievements|Special Careers|Expansion Packs/i.test(h)
-      ){
-        category = h;
-      }
-      header = null;
-      continue;
-    }
-
-    if(!line.startsWith("|")) continue;
-
-    const cells = line
-      .replace(/^\||\|$/g,"")
-      .split("|")
-      .map(clean);
-
-    if(!cells.length) continue;
-
-    if(cells.some(x => /^achievement$/i.test(x))){
-      header = cells.map(x => x.toLowerCase());
-      continue;
-    }
-
-    if(cells.every(x => /^[-:]+$/.test(x))) continue;
-
-    if(!header) continue;
-
-    let map = {};
-    header.forEach((h,j)=>map[h]=cells[j] || "");
-
-    let name =
-      map["achievement"] ||
-      cells[1] ||
-      cells[0];
-
-    name = clean(name);
-
-    if(
-      !name ||
-      name === "Achievement" ||
-      name === "Input" ||
-      /^\[?input\]?$/i.test(name)
-    ) continue;
-
-    let description =
-      map["description"] ||
-      cells[2] ||
-      "";
-
-    let purchase =
-      map["does it require in-app purchases?"] ||
-      map["does this require in-app purchases?"] ||
-      cells[4] ||
-      "";
-
-    let chance =
-      map["chance-based?"] ||
-      map["chance-based"] ||
-      cells[5] ||
-      "";
-
-    let difficulty =
-      map["difficulty"] ||
-      cells[6] ||
-      "";
-
-    let ribbon =
-      map["can you also earn a ribbon?"] ||
-      map["can also earn a ribbon?"] ||
-      map["can i also earn a ribbon?"] ||
-      map["can also earn a ribbon"] ||
-      cells[7] ||
-      "";
-
-    /*
-      Some newer wiki tables have fewer columns. Try to infer them
-      from the header rather than assuming fixed positions.
-    */
-
-    if(header.length < 7){
-      const keys = header;
-      const find = (...words) => {
-        const idx = keys.findIndex(k => words.some(w=>k.includes(w)));
-        return idx >= 0 ? cells[idx] || "" : "";
-      };
-
-      purchase = find("purchase","in-app","requires");
-      chance = find("chance");
-      difficulty = find("difficulty");
-      ribbon = find("ribbon");
-      description = find("description");
-    }
-
-    const id = "achievement:" + slug(name);
-
-    if(!output.some(x=>x.id===id)){
-      output.push({
-        id,
-        type:"achievement",
-        name,
-        description:description || "Description not provided on the source page.",
-        category,
-        purchase,
-        chance,
-        difficulty: difficulty || "Unknown",
-        ribbon,
-        emoji:emojiFor(name,"achievement")
-      });
-    }
-  }
-
-  return output;
-}
-
-function parseRibbons(md){
-  const lines = md.split(/\r?\n/);
-  const output = [];
-
-  for(let i=0;i<lines.length;i++){
-    const heading = lines[i].match(/^###\s+(.+?)\[\]\s*$/);
-    if(!heading) continue;
-
-    const name = clean(heading[1]);
-
-    if(
-      !name ||
-      /Regular Ribbons|Secret Ribbons|Ribbons/.test(name)
-    ) continue;
-
-    let description = "";
-    let difficulty = "Unknown";
-
-    for(let j=i+1;j<Math.min(i+15,lines.length);j++){
-      const x = clean(lines[j]);
-
-      if(!x) continue;
-
-      if(
-        /^The ".+" ribbon\.?$/i.test(x) ||
-        /^The '.+' ribbon\.?$/i.test(x)
-      ) continue;
-
-      if(/^Difficulty:/i.test(x)){
-        difficulty = clean(x.replace(/^Difficulty:\s*/i,""));
-        continue;
-      }
-
-      if(
-        /^It is /i.test(x) ||
-        /^Procedures to get/i.test(x) ||
-        /^Notes:/i.test(x)
-      ) break;
-
-      if(!description && x.length > 2){
-        description = x;
-        break;
-      }
-    }
-
-    const id = "ribbon:" + slug(name);
-
-    if(!output.some(x=>x.id===id)){
-      output.push({
-        id,
-        type:"ribbon",
-        name,
-        description:description || "Description not provided on the source page.",
-        category:"Ribbons",
-        purchase:"",
-        chance:/luck/i.test(difficulty) ? "Yes" : "",
-        difficulty,
-        ribbon:"",
-        emoji:emojiFor(name,"ribbon")
-      });
-    }
-  }
-
-  return output;
-}
-
-async function fetchSource(url){
-  const response = await fetch(url,{cache:"no-store"});
-  if(!response.ok) throw new Error("HTTP " + response.status);
-  return await response.text();
-}
-
-async function syncWiki(){
-  $("notice").className="notice";
-  $("notice").textContent="🔄 Syncing the complete lists from the BitLife wiki…";
-
-  try{
-    const [achievementMD,ribbonMD] = await Promise.all([
-      fetchSource(SOURCES.achievements),
-      fetchSource(SOURCES.ribbons)
-    ]);
-
-    const achievements = parseAchievementTables(achievementMD);
-    const ribbons = parseRibbons(ribbonMD);
-
-    if(achievements.length < 100){
-      throw new Error(
-        "The achievement page returned an unexpectedly small dataset (" +
-        achievements.length + " items)."
-      );
-    }
-
-    if(ribbons.length < 20){
-      throw new Error(
-        "The ribbon page returned an unexpectedly small dataset (" +
-        ribbons.length + " items)."
-      );
-    }
-
-    state.achievements = achievements;
-    state.ribbons = ribbons;
-
-    populateCategories();
-
-    $("notice").textContent =
-      "✓ Wiki synced successfully — " +
-      achievements.length + " achievements and " +
-      ribbons.length + " ribbons loaded.";
-
-    render();
-  }catch(error){
-    console.error(error);
-
-    $("notice").className="notice error";
-    $("notice").innerHTML =
-      "⚠️ <strong>Could not sync the wiki.</strong><br>" +
-      "The tracker deliberately refuses to display a fake/incomplete list. " +
-      "Check your internet connection or try <strong>Sync Wiki</strong> again." +
-      "<br><small>" + clean(error.message) + "</small>";
-
-    $("content").innerHTML =
-      '<div class="empty">No incomplete dataset was loaded. Please try syncing again.</div>';
-  }
-}
-
-function populateCategories(){
-  const select = $("category");
-  const current = select.value;
-
-  const categories = [
-    ...new Set([
-      ...state.achievements.map(x=>x.category),
-      ...state.ribbons.map(x=>x.category)
-    ])
-  ].filter(Boolean).sort();
-
-  select.innerHTML =
-    '<option value="all">All categories</option>' +
-    categories.map(x =>
-      '<option value="'+escapeHTML(x)+'">'+escapeHTML(x)+'</option>'
-    ).join("");
-
-  if(categories.includes(current)) select.value=current;
-}
-
-function escapeHTML(s){
-  return String(s)
-    .replace(/&/g,"&amp;")
-    .replace(/</g,"&lt;")
-    .replace(/>/g,"&gt;")
-    .replace(/"/g,"&quot;")
-    .replace(/'/g,"&#039;");
-}
-
-function matches(item){
-  const q = state.search.toLowerCase().trim();
-
-  const searchMatch =
-    !q ||
-    [
-      item.name,
-      item.description,
-      item.category,
-      item.difficulty,
-      item.ribbon
-    ].join(" ").toLowerCase().includes(q);
-
-  const catMatch =
-    state.category === "all" ||
-    item.category === state.category;
-
-  const diffMatch =
-    state.difficulty === "all" ||
-    item.difficulty === state.difficulty;
-
-  return searchMatch && catMatch && diffMatch;
-}
-
-function render(){
-  updateStats();
-
-  const source =
-    state.activeTab === "achievements"
-      ? state.achievements
-      : state.ribbons;
-
-  const filtered = source.filter(matches);
-
-  if(!filtered.length){
-    $("content").innerHTML =
-      '<div class="empty">🔎 Nothing matches your current filters.</div>';
-    return;
-  }
-
-  /*
-    Stable ordering:
-    - incomplete items retain original source order
-    - completed items are always moved to the bottom
-  */
-  const ordered = [...filtered].sort((a,b)=>{
-    const ad = !!state.checked[a.id];
-    const bd = !!state.checked[b.id];
-
-    if(ad !== bd) return ad ? 1 : -1;
-
-    return source.indexOf(a) - source.indexOf(b);
-  });
-
-  const groups = {};
-
-  ordered.forEach(item=>{
-    const key = item.category || "General";
-    if(!groups[key]) groups[key]=[];
-    groups[key].push(item);
-  });
-
-  $("content").innerHTML = Object.entries(groups)
-    .map(([category,items])=>{
-      const done = items.filter(x=>state.checked[x.id]).length;
-
-      return `
-        <section class="section">
-          <div class="section-title">
-            <h2>${escapeHTML(category)}</h2>
-            <div class="section-count">${done} / ${items.length} complete</div>
-          </div>
-
-          <div class="items">
-            ${items.map(renderItem).join("")}
-          </div>
-        </section>
-      `;
-    }).join("");
-
-  document.querySelectorAll(".checkbox").forEach(box=>{
-    box.addEventListener("change",()=>{
-      state.checked[box.dataset.id] = box.checked;
-      save();
-      render();
-    });
-  });
-}
-
-function renderItem(item){
-  const checked = !!state.checked[item.id];
-
-  const paid = paidInfo(item.purchase);
-  const rng = rngInfo(item.chance);
-
-  const difficulty =
-    item.difficulty &&
-    item.difficulty !== "Unknown"
-      ? `<span class="badge difficulty ${difficultyClass(item.difficulty)}">
-           ${escapeHTML(item.difficulty)}
-         </span>`
-      : "";
-
-  const paidBadge = paid
-    ? `<span class="badge paid">💳 PAID / BITIZEN</span>`
-    : "";
-
-  const rngBadge = rng
-    ? `<span class="badge rng">🎲 RNG</span>`
-    : "";
-
-  const ribbonBadge =
-    item.ribbon && !/^no$/i.test(item.ribbon)
-      ? `<span class="badge ribbon">🎗️ ${escapeHTML(item.ribbon)}</span>`
-      : "";
-
-  const purchaseText =
-    paid && item.purchase
-      ? `<span class="badge paid">Requires: ${escapeHTML(item.purchase)}</span>`
-      : "";
-
-  return `
-    <article class="item ${checked ? "done" : ""}"
-             data-diff="${escapeHTML(item.difficulty)}">
-
-      <input
-        class="checkbox"
-        type="checkbox"
-        data-id="${escapeHTML(item.id)}"
-        ${checked ? "checked" : ""}
-        aria-label="Mark ${escapeHTML(item.name)} complete">
-
-      <div class="item-main">
-        <div class="item-name">
-          <span class="emoji">${item.emoji}</span>
-          <span>${escapeHTML(item.name)}</span>
-        </div>
-
-        <div class="description">
-          ${escapeHTML(item.description)}
-        </div>
-
-        <div class="meta">
-          ${difficulty}
-          ${paidBadge}
-          ${purchaseText}
-          ${rngBadge}
-          ${ribbonBadge}
-        </div>
-      </div>
-
-      <div class="item-side">
-        ${item.type === "achievement" ? "ACHIEVEMENT" : "RIBBON"}
-      </div>
-    </article>
-  `;
-}
-
-function updateStats(){
-  const totalA = state.achievements.length;
-  const totalR = state.ribbons.length;
-
-  const doneA =
-    state.achievements.filter(x=>state.checked[x.id]).length;
-
-  const doneR =
-    state.ribbons.filter(x=>state.checked[x.id]).length;
-
-  const total = totalA + totalR;
-  const done = doneA + doneR;
-
-  const pct = total
-    ? Math.round((done / total) * 100)
-    : 0;
-
-  $("overallPct").textContent = pct + "%";
-  $("overallBar").style.width = pct + "%";
-
-  $("achievementCount").textContent =
-    doneA + " / " + totalA;
-
-  $("ribbonCount").textContent =
-    doneR + " / " + totalR;
-
-  $("achievementBar").style.width =
-    (totalA ? doneA/totalA*100 : 0) + "%";
-
-  $("ribbonBar").style.width =
-    (totalR ? doneR/totalR*100 : 0) + "%";
-
-  $("remaining").textContent =
-    total - done;
-
-  $("remainingBar").style.width =
-    (total ? (total-done)/total*100 : 0) + "%";
-}
-
-function resetProgress(){
-  if(!confirm(
-    "Reset ALL achievement and ribbon progress?\n\nThis cannot be undone."
-  )) return;
-
-  state.checked = {};
-  save();
-  render();
-}
-
-$("search").addEventListener("input",e=>{
-  state.search=e.target.value;
-  render();
-});
-
-$("category").addEventListener("change",e=>{
-  state.category=e.target.value;
-  render();
-});
-
-$("difficulty").addEventListener("change",e=>{
-  state.difficulty=e.target.value;
-  render();
-});
-
-$("sync").addEventListener("click",syncWiki);
-
-$("reset").addEventListener("click",resetProgress);
-
-document.querySelectorAll(".tab").forEach(tab=>{
-  tab.addEventListener("click",()=>{
-    document.querySelectorAll(".tab")
-      .forEach(x=>x.classList.remove("active"));
-
-    tab.classList.add("active");
-    state.activeTab=tab.dataset.tab;
-    render();
-  });
-});
-
-loadSaved();
-syncWiki();
-</script>
 </body>
 </html>
