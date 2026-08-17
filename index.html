@@ -1,45 +1,56 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 
 <title>BitLife — Complete Achievement & Ribbon Checklist</title>
 
 <style>
+
 :root{
-  --bg:#090b12;
-  --panel:#111521;
-  --panel2:#171c2a;
-  --border:#252c3d;
-  --text:#f4f7fb;
-  --muted:#929bad;
-  --accent:#7c5cff;
-  --accent2:#a78bfa;
-  --green:#35d07f;
-  --red:#ff5d73;
-  --yellow:#f4c95d;
+  --bg:#080b09;
+  --panel:#101512;
+  --panel2:#151c17;
+  --panel3:#1a231d;
+  --border:#29332c;
+  --border-light:#354239;
+  --text:#f5f7f5;
+  --muted:#929c95;
+  --green:#00d26a;
+  --green-dark:#00a653;
+  --green-light:#42e58f;
+  --yellow:#ffd21c;
+  --yellow-dark:#e7b900;
+  --red:#ff5364;
   --blue:#4da3ff;
-  --orange:#ff9650;
-  --shadow:0 18px 50px rgba(0,0,0,.35);
+  --orange:#ff9f43;
+  --shadow:0 18px 50px rgba(0,0,0,.38);
 }
 
 *{
   box-sizing:border-box;
 }
 
+html{
+  scroll-behavior:smooth;
+}
+
 body{
   margin:0;
   background:
-    radial-gradient(circle at 10% 0%,rgba(124,92,255,.16),transparent 30%),
-    radial-gradient(circle at 90% 10%,rgba(53,208,127,.08),transparent 25%),
+    radial-gradient(circle at 10% 0%,rgba(0,210,106,.13),transparent 30%),
+    radial-gradient(circle at 90% 10%,rgba(255,210,28,.06),transparent 25%),
     var(--bg);
   color:var(--text);
   font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
   min-height:100vh;
 }
 
-button,input,select{
+button,
+input,
+select{
   font:inherit;
 }
 
@@ -66,8 +77,8 @@ header{
   display:grid;
   place-items:center;
   font-size:29px;
-  background:linear-gradient(135deg,#7c5cff,#a855f7);
-  box-shadow:0 10px 30px rgba(124,92,255,.3);
+  background:linear-gradient(135deg,var(--green),#00a653);
+  box-shadow:0 10px 30px rgba(0,210,106,.28);
 }
 
 h1{
@@ -89,7 +100,7 @@ h1{
 }
 
 .stat{
-  background:linear-gradient(145deg,var(--panel),#0e121c);
+  background:linear-gradient(145deg,var(--panel),#0c110e);
   border:1px solid var(--border);
   border-radius:17px;
   padding:17px;
@@ -111,7 +122,7 @@ h1{
 
 .progress{
   height:8px;
-  background:#242a38;
+  background:#202820;
   border-radius:99px;
   overflow:hidden;
   margin-top:10px;
@@ -120,7 +131,7 @@ h1{
 .progress > div{
   height:100%;
   width:0;
-  background:linear-gradient(90deg,var(--accent),#d16cff);
+  background:linear-gradient(90deg,var(--green),var(--green-light));
   transition:width .35s ease;
 }
 
@@ -128,30 +139,33 @@ h1{
   position:sticky;
   top:10px;
   z-index:20;
-  background:rgba(13,16,25,.88);
+  background:rgba(10,15,12,.90);
   backdrop-filter:blur(16px);
   border:1px solid var(--border);
   border-radius:18px;
   padding:12px;
   display:grid;
-  grid-template-columns:1.6fr 1fr 1fr auto auto;
+  grid-template-columns:1.6fr 1fr 1fr auto auto auto;
   gap:9px;
   margin-bottom:20px;
   box-shadow:var(--shadow);
 }
 
-input,select,button{
+input,
+select,
+button{
   border:1px solid var(--border);
   color:var(--text);
-  background:#171c28;
+  background:#151b17;
   border-radius:11px;
   padding:11px 13px;
   outline:none;
 }
 
-input:focus,select:focus{
-  border-color:var(--accent);
-  box-shadow:0 0 0 3px rgba(124,92,255,.12);
+input:focus,
+select:focus{
+  border-color:var(--green);
+  box-shadow:0 0 0 3px rgba(0,210,106,.12);
 }
 
 button{
@@ -162,7 +176,7 @@ button{
 
 button:hover{
   transform:translateY(-1px);
-  border-color:#514b73;
+  border-color:var(--border-light);
 }
 
 button:disabled{
@@ -172,12 +186,67 @@ button:disabled{
 }
 
 .primary{
-  background:linear-gradient(135deg,#7052ed,#925ce8);
+  background:linear-gradient(135deg,var(--green-dark),var(--green));
   border-color:transparent;
+  color:#03150b;
 }
 
 .danger{
   color:#ff8797;
+}
+
+.paid-toggle{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+  padding:8px 12px;
+  border:1px solid var(--border);
+  background:#151b17;
+  border-radius:11px;
+  color:#cbd3cd;
+  font-size:12px;
+  font-weight:700;
+  cursor:pointer;
+  user-select:none;
+  min-width:190px;
+}
+
+.paid-toggle:hover{
+  border-color:var(--border-light);
+}
+
+.paid-toggle input{
+  appearance:none;
+  width:19px;
+  height:19px;
+  padding:0;
+  margin:0;
+  flex:none;
+  border-radius:6px;
+  border:2px solid #465149;
+  background:#0c110e;
+  cursor:pointer;
+  position:relative;
+}
+
+.paid-toggle input:checked{
+  background:var(--green);
+  border-color:var(--green);
+}
+
+.paid-toggle input:checked:after{
+  content:"✓";
+  color:#06140d;
+  font-size:13px;
+  font-weight:900;
+  position:absolute;
+  left:3px;
+  top:-2px;
+}
+
+.paid-toggle span{
+  line-height:1.25;
 }
 
 .tabs{
@@ -189,13 +258,13 @@ button:disabled{
 .tab{
   padding:10px 17px;
   border-radius:12px;
-  background:#121722;
+  background:#121814;
 }
 
 .tab.active{
-  background:rgba(124,92,255,.18);
-  color:#cfc4ff;
-  border-color:rgba(124,92,255,.55);
+  background:rgba(0,210,106,.13);
+  color:var(--green-light);
+  border-color:rgba(0,210,106,.45);
 }
 
 .section{
@@ -231,19 +300,19 @@ button:disabled{
   align-items:start;
   padding:14px;
   border:1px solid var(--border);
-  background:linear-gradient(145deg,#111621,#0e121b);
+  background:linear-gradient(145deg,#111713,#0d120f);
   border-radius:14px;
   transition:.2s ease;
 }
 
 .item:hover{
-  border-color:#343d53;
+  border-color:var(--border-light);
   transform:translateY(-1px);
 }
 
 .item.done{
   opacity:.52;
-  background:#0d1119;
+  background:#0c110e;
 }
 
 .checkbox{
@@ -252,10 +321,10 @@ button:disabled{
   height:22px;
   margin:1px 0 0;
   border-radius:7px;
-  border:2px solid #444d61;
+  border:2px solid #465149;
   cursor:pointer;
   position:relative;
-  background:#0d1118;
+  background:#0c110e;
 }
 
 .checkbox:checked{
@@ -291,7 +360,7 @@ button:disabled{
 }
 
 .description{
-  color:#aeb5c5;
+  color:#aeb7b0;
   margin-top:4px;
   line-height:1.45;
   font-size:13px;
@@ -318,9 +387,9 @@ button:disabled{
 }
 
 .paid{
-  color:#ffd27a;
-  background:rgba(244,201,93,.11);
-  border-color:rgba(244,201,93,.28);
+  color:#ffd875;
+  background:rgba(255,210,28,.10);
+  border-color:rgba(255,210,28,.28);
 }
 
 .rng{
@@ -330,9 +399,9 @@ button:disabled{
 }
 
 .ribbon{
-  color:#c8b8ff;
-  background:rgba(124,92,255,.11);
-  border-color:rgba(124,92,255,.25);
+  color:#7ff0b0;
+  background:rgba(0,210,106,.10);
+  border-color:rgba(0,210,106,.25);
 }
 
 .difficulty{
@@ -341,48 +410,224 @@ button:disabled{
 
 .diff-very-easy,
 .diff-easy{
-  background:rgba(53,208,127,.11);
-  border-color:rgba(53,208,127,.25);
+  background:rgba(0,210,106,.11);
+  border-color:rgba(0,210,106,.25);
   color:#75e9a8;
 }
 
 .diff-medium,
 .diff-moderate{
-  background:rgba(244,201,93,.1);
-  border-color:rgba(244,201,93,.25);
+  background:rgba(255,210,28,.10);
+  border-color:rgba(255,210,28,.25);
   color:#f7d779;
 }
 
 .diff-hard{
-  background:rgba(255,150,80,.11);
-  border-color:rgba(255,150,80,.25);
+  background:rgba(255,159,67,.11);
+  border-color:rgba(255,159,67,.25);
   color:#ffad70;
 }
 
 .diff-very-hard,
 .diff-extreme{
-  background:rgba(255,93,115,.11);
-  border-color:rgba(255,93,115,.25);
+  background:rgba(255,83,100,.11);
+  border-color:rgba(255,83,100,.25);
   color:#ff8293;
 }
 
 .diff-luck-based{
-  background:rgba(168,139,250,.12);
-  border-color:rgba(168,139,250,.25);
-  color:#c7b5ff;
+  background:rgba(0,210,106,.10);
+  border-color:rgba(0,210,106,.25);
+  color:#7ff0b0;
 }
 
 .diff-unknown{
-  background:rgba(146,155,173,.1);
-  border-color:rgba(146,155,173,.2);
+  background:rgba(146,155,173,.10);
+  border-color:rgba(146,155,173,.20);
   color:#aeb5c5;
 }
 
-.item-side{
+.recommended{
+  margin-bottom:28px;
+}
+
+.recommended .section-title{
+  margin-bottom:10px;
+}
+
+.recommended-title{
+  display:flex;
+  align-items:center;
+  gap:8px;
+}
+
+.recommended-title h2{
+  color:var(--green-light);
+}
+
+.recommended-subtitle{
   color:var(--muted);
-  font-size:11px;
-  text-align:right;
-  white-space:nowrap;
+  font-size:12px;
+  margin-top:3px;
+}
+
+.recommended-grid{
+  display:grid;
+  gap:8px;
+}
+
+.recommended-item{
+  position:relative;
+  border:1px solid rgba(0,210,106,.30);
+  background:
+    linear-gradient(
+      145deg,
+      rgba(0,210,106,.10),
+      rgba(17,23,19,.96)
+    );
+}
+
+.recommended-item:before{
+  content:"RECOMMENDED";
+  position:absolute;
+  top:10px;
+  right:12px;
+  color:var(--green-light);
+  font-size:9px;
+  font-weight:900;
+  letter-spacing:.08em;
+}
+
+.recommended-item .item-name{
+  padding-right:105px;
+}
+
+.ribbon-item{
+  display:grid;
+  grid-template-columns:auto 1fr auto;
+  gap:13px;
+  align-items:start;
+  border:1px solid var(--border);
+  background:linear-gradient(145deg,#111613,#0e120f);
+  border-radius:14px;
+  overflow:hidden;
+  transition:border-color .2s ease,transform .2s ease,background .2s ease;
+}
+
+.ribbon-item:hover{
+  border-color:#3a493e;
+  transform:translateY(-1px);
+}
+
+.ribbon-item.done{
+  opacity:.55;
+}
+
+.ribbon-header{
+  grid-column:2 / 4;
+  display:grid;
+  grid-template-columns:1fr auto;
+  gap:12px;
+  align-items:center;
+  min-width:0;
+  padding:16px 14px 16px 0;
+  cursor:pointer;
+}
+
+.ribbon-title{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  min-width:0;
+}
+
+.ribbon-title-name{
+  font-weight:800;
+  font-size:15px;
+  color:#f7faf7;
+}
+
+.ribbon-subtitle{
+  color:#8d9990;
+  font-size:12px;
+  margin-top:4px;
+}
+
+.ribbon-arrow{
+  color:var(--yellow);
+  font-size:19px;
+  width:26px;
+  text-align:center;
+  transition:transform .2s ease;
+}
+
+.ribbon-item.expanded .ribbon-arrow{
+  transform:rotate(180deg);
+}
+
+.ribbon-details{
+  grid-column:2 / 4;
+  display:none;
+  padding:0 18px 18px 0;
+  animation:ribbonOpen .18s ease;
+}
+
+.ribbon-item.expanded .ribbon-details{
+  display:block;
+}
+
+@keyframes ribbonOpen{
+  from{
+    opacity:0;
+    transform:translateY(-5px);
+  }
+  to{
+    opacity:1;
+    transform:translateY(0);
+  }
+}
+
+.ribbon-how-title{
+  color:var(--green-light);
+  font-size:12px;
+  font-weight:900;
+  text-transform:uppercase;
+  letter-spacing:.06em;
+  margin-bottom:7px;
+}
+
+.ribbon-how{
+  color:#c2cbc5;
+  font-size:13px;
+  line-height:1.55;
+}
+
+.ribbon-how ul{
+  margin:8px 0 0 18px;
+  padding:0;
+}
+
+.ribbon-how li{
+  margin-bottom:6px;
+}
+
+.ribbon-notes{
+  margin-top:12px;
+  padding:10px 12px;
+  background:rgba(255,210,28,.055);
+  border:1px solid rgba(255,210,28,.14);
+  border-radius:10px;
+  color:#cfc28a;
+  font-size:12px;
+  line-height:1.5;
+}
+
+.ribbon-item > .checkbox{
+  margin:29px 0 0 14px;
+}
+
+.ribbon-item > .item-side{
+  display:none;
 }
 
 .empty{
@@ -402,8 +647,8 @@ button:disabled{
 .spinner{
   width:34px;
   height:34px;
-  border:3px solid #252b39;
-  border-top-color:var(--accent);
+  border:3px solid #252d27;
+  border-top-color:var(--green);
   border-radius:50%;
   animation:spin .8s linear infinite;
   margin:0 auto 15px;
@@ -416,8 +661,8 @@ button:disabled{
 }
 
 .notice{
-  background:rgba(244,201,93,.08);
-  border:1px solid rgba(244,201,93,.2);
+  background:rgba(255,210,28,.07);
+  border:1px solid rgba(255,210,28,.20);
   color:#e7d69b;
   border-radius:13px;
   padding:12px 14px;
@@ -427,14 +672,14 @@ button:disabled{
 }
 
 .notice.success{
-  background:rgba(53,208,127,.08);
-  border-color:rgba(53,208,127,.25);
+  background:rgba(0,210,106,.08);
+  border-color:rgba(0,210,106,.25);
   color:#8ee8b5;
 }
 
-.error{
-  background:rgba(255,93,115,.08);
-  border-color:rgba(255,93,115,.25);
+.notice.error{
+  background:rgba(255,83,100,.08);
+  border-color:rgba(255,83,100,.25);
   color:#ffabb7;
 }
 
@@ -446,7 +691,7 @@ button:disabled{
 }
 
 footer{
-  color:#697286;
+  color:#69746c;
   text-align:center;
   font-size:12px;
   margin-top:35px;
@@ -454,12 +699,57 @@ footer{
 }
 
 footer a{
-  color:#a78bfa;
+  color:var(--green-light);
   text-decoration:none;
 }
 
 footer a:hover{
   text-decoration:underline;
+}
+
+.item[data-diff="Very Easy"]{
+  border-left:3px solid #35d07f;
+}
+
+.item[data-diff="Easy"]{
+  border-left:3px solid #58dc92;
+}
+
+.item[data-diff="Medium"],
+.item[data-diff="Moderate"]{
+  border-left:3px solid #ffd21c;
+}
+
+.item[data-diff="Hard"]{
+  border-left:3px solid #ff9f43;
+}
+
+.item[data-diff="Very Hard"]{
+  border-left:3px solid #ff6f69;
+}
+
+.item[data-diff="Extreme"]{
+  border-left:3px solid #ff4f6c;
+}
+
+.item[data-diff="Luck-based"]{
+  border-left:3px solid var(--green);
+}
+
+.item[data-diff="Unknown"]{
+  border-left:3px solid #555d70;
+}
+
+@media(max-width:1150px){
+
+  .controls{
+    grid-template-columns:1.5fr 1fr 1fr;
+  }
+
+  .paid-toggle{
+    justify-content:flex-start;
+  }
+
 }
 
 @media(max-width:900px){
@@ -471,6 +761,7 @@ footer a:hover{
   .controls{
     grid-template-columns:1fr 1fr;
   }
+
 }
 
 @media(max-width:600px){
@@ -499,41 +790,44 @@ footer a:hover{
   .item-side{
     display:none;
   }
+
+  .recommended-item .item-name{
+    padding-right:0;
+  }
+
+  .recommended-item:before{
+    position:static;
+    display:block;
+    margin-bottom:7px;
+  }
+
+  .ribbon-item{
+    grid-template-columns:auto 1fr;
+  }
+
+  .ribbon-header{
+    grid-column:2;
+    padding-right:12px;
+  }
+
+  .ribbon-details{
+    grid-column:2;
+    padding-right:12px;
+  }
+
+  .ribbon-item > .checkbox{
+    margin:29px 0 0 12px;
+  }
+
 }
 
-.item[data-diff="Very Easy"]{
-  border-left:3px solid #35d07f;
+select option{
+  background:#151b17;
+  color:#fff;
 }
 
-.item[data-diff="Easy"]{
-  border-left:3px solid #58dc92;
-}
-
-.item[data-diff="Medium"],
-.item[data-diff="Moderate"]{
-  border-left:3px solid #f4c95d;
-}
-
-.item[data-diff="Hard"]{
-  border-left:3px solid #ff9650;
-}
-
-.item[data-diff="Very Hard"]{
-  border-left:3px solid #ff6f69;
-}
-
-.item[data-diff="Extreme"]{
-  border-left:3px solid #ff4f6c;
-}
-
-.item[data-diff="Luck-based"]{
-  border-left:3px solid #a78bfa;
-}
-
-.item[data-diff="Unknown"]{
-  border-left:3px solid #555d70;
-}
 </style>
+
 </head>
 
 <body>
@@ -544,25 +838,29 @@ footer a:hover{
 
   <div class="brand">
 
-    <div class="logo">🎮</div>
+    <div class="logo">
+      🎮
+    </div>
 
     <div>
-      <h1>BitLife Completion Tracker</h1>
+
+      <h1>
+        BitLife Completion Tracker
+      </h1>
 
       <p class="subtitle">
         Every achievement & ribbon • synced from the BitLife wiki
       </p>
+
     </div>
 
   </div>
 
 </header>
 
-
 <div id="notice" class="notice">
   🔄 Loading the complete achievement and ribbon lists from the BitLife wiki…
 </div>
-
 
 <section class="stats">
 
@@ -582,7 +880,6 @@ footer a:hover{
 
   </div>
 
-
   <div class="stat">
 
     <div class="stat-label">
@@ -599,7 +896,6 @@ footer a:hover{
 
   </div>
 
-
   <div class="stat">
 
     <div class="stat-label">
@@ -615,7 +911,6 @@ footer a:hover{
     </div>
 
   </div>
-
 
   <div class="stat">
 
@@ -635,7 +930,6 @@ footer a:hover{
 
 </section>
 
-
 <div class="controls">
 
   <input
@@ -644,7 +938,6 @@ footer a:hover{
     autocomplete="off"
   >
 
-
   <select id="category">
 
     <option value="all">
@@ -652,7 +945,6 @@ footer a:hover{
     </option>
 
   </select>
-
 
   <select id="difficulty">
 
@@ -672,18 +964,35 @@ footer a:hover{
 
   </select>
 
+  <label class="paid-toggle">
 
-  <button id="sync" class="primary">
+    <input
+      id="includePaid"
+      type="checkbox"
+      checked
+    >
+
+    <span>
+      Include paid content in totals
+    </span>
+
+  </label>
+
+  <button
+    id="sync"
+    class="primary"
+  >
     ↻ Sync Wiki
   </button>
 
-
-  <button id="reset" class="danger">
+  <button
+    id="reset"
+    class="danger"
+  >
     Reset Progress
   </button>
 
 </div>
-
 
 <div class="tabs">
 
@@ -703,7 +1012,6 @@ footer a:hover{
 
 </div>
 
-
 <main id="content">
 
   <div class="loading">
@@ -716,10 +1024,10 @@ footer a:hover{
 
 </main>
 
-
 <footer>
 
   Data source:
+
   <a
     href="https://bitlife-life-simulator.fandom.com/wiki/Achievements"
     target="_blank"
@@ -727,6 +1035,7 @@ footer a:hover{
   >
     BitLife - Life Simulator Wiki
   </a>
+
   on Fandom.
 
   <br>
@@ -737,43 +1046,14 @@ footer a:hover{
 
 </div>
 
-
 <script>
 
-/*
-==========================================================
- BITLIFE COMPLETION TRACKER
-==========================================================
+/* ==========================================================
+   BITLIFE COMPLETION TRACKER
+========================================================== */
 
-This version uses the Fandom MediaWiki API directly.
-
-Instead of:
-
- GitHub Pages
-      ↓
-    Jina
-      ↓
-   Fandom
-
-we use:
-
- GitHub Pages
-      ↓
- Fandom MediaWiki API
-      ↓
- rendered wiki HTML
-      ↓
- local parser
-
-The API uses origin=* so it can be requested from
-a browser hosted on GitHub Pages.
-
-==========================================================
-*/
-
-
-const WIKI = "https://bitlife-life-simulator.fandom.com";
-
+const WIKI =
+  "https://bitlife-life-simulator.fandom.com";
 
 const API = {
 
@@ -799,9 +1079,8 @@ const API = {
 
 };
 
-
-const STORAGE = "bitlife-completion-v4";
-
+const STORAGE =
+  "bitlife-completion-v7";
 
 let state = {
 
@@ -811,26 +1090,30 @@ let state = {
 
   checked: {},
 
-  activeTab: "achievements",
+  includePaid: true,
 
-  search: "",
+  activeTab:
+    "achievements",
 
-  category: "all",
+  search:
+    "",
 
-  difficulty: "all"
+  category:
+    "all",
+
+  difficulty:
+    "all"
 
 };
 
+const $ =
+  id =>
+    document.getElementById(id);
 
-const $ = id => document.getElementById(id);
 
-
-/*
-==========================================================
- STORAGE
-==========================================================
-*/
-
+/* ==========================================================
+   STORAGE
+========================================================== */
 
 function loadSaved(){
 
@@ -838,11 +1121,18 @@ function loadSaved(){
 
     const saved =
       JSON.parse(
-        localStorage.getItem(STORAGE) || "{}"
+        localStorage.getItem(
+          STORAGE
+        ) || "{}"
       );
 
     state.checked =
       saved.checked || {};
+
+    state.includePaid =
+      saved.includePaid !== undefined
+        ? !!saved.includePaid
+        : true;
 
   }catch(error){
 
@@ -852,8 +1142,12 @@ function loadSaved(){
     );
 
     state.checked = {};
+    state.includePaid = true;
 
   }
+
+  $("includePaid").checked =
+    state.includePaid;
 
 }
 
@@ -863,10 +1157,19 @@ function save(){
   try{
 
     localStorage.setItem(
+
       STORAGE,
+
       JSON.stringify({
-        checked: state.checked
+
+        checked:
+          state.checked,
+
+        includePaid:
+          state.includePaid
+
       })
+
     );
 
   }catch(error){
@@ -881,87 +1184,106 @@ function save(){
 }
 
 
-/*
-==========================================================
- TEXT CLEANING
-==========================================================
-*/
-
+/* ==========================================================
+   CLEAN TEXT
+========================================================== */
 
 function clean(text){
 
-  if(text === null || text === undefined){
+  if(
+    text === null ||
+    text === undefined
+  ){
+
     return "";
+
   }
 
-  let value = String(text);
+  let value =
+    String(text);
 
-  /*
-    Remove references.
-  */
+  value =
+    value.replace(
+      /\[[0-9]+\]/g,
+      ""
+    );
 
-  value = value.replace(
-    /\[[0-9]+\]/g,
-    ""
-  );
+  value =
+    value.replace(
+      /\[citation needed\]/gi,
+      ""
+    );
 
-  /*
-    Remove wiki reference names.
-  */
+  value =
+    value.replace(
+      /\[\s*\]/g,
+      ""
+    );
 
-  value = value.replace(
-    /\[citation needed\]/gi,
-    ""
-  );
+  value =
+    value
+      .replace(
+        /&nbsp;/gi,
+        " "
+      )
+      .replace(
+        /&amp;/gi,
+        "&"
+      )
+      .replace(
+        /&quot;/gi,
+        '"'
+      )
+      .replace(
+        /&#039;/gi,
+        "'"
+      )
+      .replace(
+        /&lt;/gi,
+        "<"
+      )
+      .replace(
+        /&gt;/gi,
+        ">"
+      );
 
-  /*
-    Convert common HTML entities.
-  */
+  value =
+    value
+      .replace(
+        /\*\*/g,
+        ""
+      )
+      .replace(
+        /__/g,
+        ""
+      )
+      .replace(
+        /`/g,
+        ""
+      );
 
-  value = value
-    .replace(/&nbsp;/gi," ")
-    .replace(/&amp;/gi,"&")
-    .replace(/&quot;/gi,'"')
-    .replace(/&#039;/gi,"'")
-    .replace(/&lt;/gi,"<")
-    .replace(/&gt;/gi,">");
+  value =
+    value.replace(
+      /\{\{[^{}]*\}\}/g,
+      ""
+    );
 
-  /*
-    Remove leftover markdown formatting.
-  */
-
-  value = value
-    .replace(/\*\*/g,"")
-    .replace(/__/g,"")
-    .replace(/`/g,"");
-
-  /*
-    Remove wiki template noise.
-  */
-
-  value = value.replace(
-    /\{\{[^{}]*\}\}/g,
-    ""
-  );
-
-  /*
-    Collapse whitespace.
-  */
-
-  value = value
-    .replace(/\s+/g," ")
-    .trim();
+  value =
+    value
+      .replace(
+        /\s+/g,
+        " "
+      )
+      .trim();
 
   return value;
+
 }
 
 
-/*
-==========================================================
- HTML TEXT EXTRACTION
-==========================================================
-*/
-
+/* ==========================================================
+   ELEMENT TEXT
+========================================================== */
 
 function elementText(element){
 
@@ -969,62 +1291,65 @@ function elementText(element){
     return "";
   }
 
-  /*
-    Clone so we can safely remove things that aren't
-    useful to the tracker.
-  */
-
-  const clone = element.cloneNode(true);
+  const clone =
+    element.cloneNode(true);
 
   clone
     .querySelectorAll(
       "sup,style,script,noscript,.reference"
     )
-    .forEach(el => el.remove());
-
-  /*
-    Convert <br> into spaces.
-  */
+    .forEach(
+      el =>
+        el.remove()
+    );
 
   clone
     .querySelectorAll("br")
-    .forEach(br => {
-      br.replaceWith(
-        document.createTextNode(" ")
-      );
-    });
+    .forEach(
+      br => {
+
+        br.replaceWith(
+          document.createTextNode(" ")
+        );
+
+      }
+    );
 
   return clean(
     clone.textContent || ""
   );
+
 }
 
 
-/*
-==========================================================
- SLUG
-==========================================================
-*/
-
+/* ==========================================================
+   SLUG
+========================================================== */
 
 function slug(text){
 
   return clean(text)
     .toLowerCase()
-    .replace(/[^a-z0-9]+/g,"-")
-    .replace(/^-|-$/g,"");
+    .replace(
+      /[^a-z0-9]+/g,
+      "-"
+    )
+    .replace(
+      /^-|-$/g,
+      ""
+    );
 
 }
 
 
-/*
-==========================================================
- EMOJI
-==========================================================
-*/
+/* ==========================================================
+   EMOJI
+========================================================== */
 
-
-function emojiFor(name,type){
+function emojiFor(
+  name,
+  type
+){
 
   const n =
     name.toLowerCase();
@@ -1087,15 +1412,20 @@ function emojiFor(name,type){
 
   ];
 
+  for(
+    const [regex,icon]
+    of rules
+  ){
 
-  for(const [regex,icon] of rules){
+    if(
+      regex.test(n)
+    ){
 
-    if(regex.test(n)){
       return icon;
+
     }
 
   }
-
 
   return type === "ribbon"
     ? "🎗️"
@@ -1104,12 +1434,9 @@ function emojiFor(name,type){
 }
 
 
-/*
-==========================================================
- DIFFICULTY
-==========================================================
-*/
-
+/* ==========================================================
+   DIFFICULTY
+========================================================== */
 
 function normalizeDifficulty(value){
 
@@ -1123,31 +1450,45 @@ function normalizeDifficulty(value){
   const lower =
     text.toLowerCase();
 
-  if(lower.includes("very easy")){
+  if(
+    lower.includes("very easy")
+  ){
     return "Very Easy";
   }
 
-  if(lower === "easy"){
+  if(
+    lower === "easy"
+  ){
     return "Easy";
   }
 
-  if(lower === "moderate"){
+  if(
+    lower === "moderate"
+  ){
     return "Moderate";
   }
 
-  if(lower === "medium"){
+  if(
+    lower === "medium"
+  ){
     return "Medium";
   }
 
-  if(lower === "very hard"){
+  if(
+    lower.includes("very hard")
+  ){
     return "Very Hard";
   }
 
-  if(lower === "hard"){
+  if(
+    lower === "hard"
+  ){
     return "Hard";
   }
 
-  if(lower === "extreme"){
+  if(
+    lower.includes("extreme")
+  ){
     return "Extreme";
   }
 
@@ -1159,50 +1500,211 @@ function normalizeDifficulty(value){
   }
 
   return text;
+
+}
+
+
+/*
+  Lower number = easier.
+
+  Moderate is intentionally treated the same as Medium.
+*/
+
+const DIFFICULTY_RANK = {
+
+  "Very Easy": 1,
+  "Easy": 2,
+  "Medium": 3,
+  "Moderate": 3,
+  "Hard": 4,
+  "Very Hard": 5,
+  "Extreme": 6,
+  "Luck-based": 7,
+  "Unknown": 8
+
+};
+
+
+function difficultyRank(value){
+
+  return (
+    DIFFICULTY_RANK[
+      normalizeDifficulty(value)
+    ] || 8
+  );
+
 }
 
 
 function difficultyClass(value){
 
   return "diff-" +
+
     clean(value)
       .toLowerCase()
-      .replace(/\s+/g,"-");
+      .replace(
+        /\s+/g,
+        "-"
+      );
 
 }
 
 
+/* ==========================================================
+   PAID / JOB PACK DETECTION
+========================================================== */
+
 /*
-==========================================================
- PAID / RNG
-==========================================================
+  The wiki explicitly identifies some achievements as paid
+  through the purchase / in-app purchase column.
+
+  In addition, achievements appearing AFTER the General
+  achievement section are treated as requiring paid Job Packs,
+  as requested.
+
+  This is deliberately stored separately as paidJobPack so
+  the UI can distinguish ordinary paid/Bizizenship content
+  from Job Pack content.
 */
 
 
 function paidInfo(text){
 
   const t =
-    clean(text).toLowerCase();
+    clean(text)
+      .toLowerCase();
 
   if(!t){
     return false;
   }
 
+  /*
+    Handle explicit Yes values.
+
+    Examples:
+      Yes
+      Yes - God Mode
+      Yes (Bitizenship)
+      Yes - Job Pack
+  */
+
   if(
     /\byes\b/.test(t) &&
     !/\bno\b/.test(t)
   ){
+
     return true;
+
   }
 
-  return /bitizenship|god mode|in-app|paid|purchase/.test(t);
+  /*
+    Explicit wording used by wiki pages.
+  */
+
+  return (
+    /bitizenship/.test(t) ||
+    /god mode/.test(t) ||
+    /in-app/.test(t) ||
+    /in app/.test(t) ||
+    /\bpaid\b/.test(t) ||
+    /purchase/.test(t) ||
+    /requires.*pack/.test(t) ||
+    /expansion pack/.test(t) ||
+    /job pack/.test(t)
+  );
+
 }
 
+
+function itemIsPaid(item){
+
+  if(!item){
+    return false;
+  }
+
+  /*
+    ACHIEVEMENTS
+  */
+
+  if(
+    item.type === "achievement"
+  ){
+
+    /*
+      Explicit wiki paid designation always wins.
+    */
+
+    if(
+      paidInfo(
+        item.purchase
+      )
+    ){
+
+      return true;
+
+    }
+
+    /*
+      Achievements after General are paid Job Pack
+      achievements.
+    */
+
+    if(
+      item.paidJobPack
+    ){
+
+      return true;
+
+    }
+
+    return false;
+
+  }
+
+
+  /*
+    RIBBONS
+  */
+
+  if(
+    item.type === "ribbon"
+  ){
+
+    return paidInfo(
+      [
+        item.description,
+        ...(item.howTo || []),
+        ...(item.notes || [])
+      ].join(" ")
+    );
+
+  }
+
+  return false;
+
+}
+
+
+function isJobPackAchievement(item){
+
+  return !!(
+    item &&
+    item.type === "achievement" &&
+    item.paidJobPack
+  );
+
+}
+
+
+/* ==========================================================
+   RNG
+========================================================== */
 
 function rngInfo(text){
 
   const t =
-    clean(text).toLowerCase();
+    clean(text)
+      .toLowerCase();
 
   return (
     /\byes\b/.test(t) ||
@@ -1215,35 +1717,54 @@ function rngInfo(text){
 }
 
 
-/*
-==========================================================
- HEADER NORMALIZATION
-==========================================================
-*/
-
+/* ==========================================================
+   HEADER NORMALIZATION
+========================================================== */
 
 function normalizeHeader(text){
 
   return clean(text)
     .toLowerCase()
-    .replace(/\?/g,"")
-    .replace(/[^a-z0-9]+/g," ")
+    .replace(
+      /\?/g,
+      ""
+    )
+    .replace(
+      /[^a-z0-9]+/g,
+      " "
+    )
     .trim();
 
 }
 
 
-function findColumn(headers,patterns){
+function findColumn(
+  headers,
+  patterns
+){
 
-  for(let i=0;i<headers.length;i++){
+  for(
+    let i=0;
+    i<headers.length;
+    i++
+  ){
 
     const header =
-      normalizeHeader(headers[i]);
+      normalizeHeader(
+        headers[i]
+      );
 
-    for(const pattern of patterns){
+    for(
+      const pattern
+      of patterns
+    ){
 
-      if(header.includes(pattern)){
+      if(
+        header.includes(pattern)
+      ){
+
         return i;
+
       }
 
     }
@@ -1255,12 +1776,9 @@ function findColumn(headers,patterns){
 }
 
 
-/*
-==========================================================
- TABLE PARSER
-==========================================================
-*/
-
+/* ==========================================================
+   TABLE PARSER
+========================================================== */
 
 function tableToRows(table){
 
@@ -1273,18 +1791,14 @@ function tableToRows(table){
     return [];
   }
 
+  let headerRowIndex =
+    -1;
 
-  /*
-    Find the most likely header row.
-
-    Fandom tables can contain captions or small
-    introductory rows before the real header.
-  */
-
-  let headerRowIndex = -1;
-
-
-  for(let i=0;i<Math.min(rows.length,5);i++){
+  for(
+    let i=0;
+    i<Math.min(rows.length,5);
+    i++
+  ){
 
     const cells =
       Array.from(
@@ -1303,32 +1817,34 @@ function tableToRows(table){
       text.includes("difficulty")
     ){
 
-      headerRowIndex = i;
+      headerRowIndex =
+        i;
+
       break;
 
     }
 
   }
 
+  if(
+    headerRowIndex === -1
+  ){
 
-  if(headerRowIndex === -1){
     return [];
-  }
 
+  }
 
   const headerCells =
     Array.from(
-      rows[headerRowIndex]
-        .querySelectorAll("th,td")
+      rows[headerRowIndex].querySelectorAll("th,td")
     );
 
-
   const headers =
-    headerCells.map(elementText);
-
+    headerCells.map(
+      elementText
+    );
 
   const output = [];
-
 
   for(
     let i=headerRowIndex+1;
@@ -1338,22 +1854,20 @@ function tableToRows(table){
 
     const cells =
       Array.from(
-        rows[i]
-          .querySelectorAll("th,td")
+        rows[i].querySelectorAll("th,td")
       );
-
 
     if(!cells.length){
       continue;
     }
 
-
     output.push(
-      cells.map(elementText)
+      cells.map(
+        elementText
+      )
     );
 
   }
-
 
   return {
     headers,
@@ -1363,14 +1877,83 @@ function tableToRows(table){
 }
 
 
+/* ==========================================================
+   ACHIEVEMENT CATEGORY DETECTION
+========================================================== */
+
+function categoryForTable(
+  table,
+  headings
+){
+
+  let best =
+    "General";
+
+  for(
+    const heading
+    of headings
+  ){
+
+    if(
+      heading.compareDocumentPosition(table) &
+      Node.DOCUMENT_POSITION_FOLLOWING
+    ){
+
+      const text =
+        elementText(
+          heading
+        );
+
+      if(
+        text &&
+        !/achievement|list of achievements|special careers|expansion packs/i.test(text)
+      ){
+
+        best =
+          text;
+
+      }
+
+    }else{
+
+      break;
+
+    }
+
+  }
+
+  return best;
+
+}
+
+
 /*
-==========================================================
- ACHIEVEMENT PARSER
-==========================================================
+  Returns true when the current table is positioned after
+  the General achievement section.
+
+  The parser processes tables in document order, so once the
+  General achievement table has been encountered, every later
+  achievement table is treated as paid Job Pack content.
 */
 
+function isGeneralCategory(
+  category
+){
 
-function parseAchievementTables(html){
+  return /^general$/i.test(
+    clean(category)
+  );
+
+}
+
+
+/* ==========================================================
+   ACHIEVEMENT PARSER
+========================================================== */
+
+function parseAchievementTables(
+  html
+){
 
   const parser =
     new DOMParser();
@@ -1381,84 +1964,46 @@ function parseAchievementTables(html){
       "text/html"
     );
 
-
   const tables =
     Array.from(
       doc.querySelectorAll("table")
     );
 
-
   const output = [];
-
-
-  /*
-    Keep track of headings so achievements can be
-    grouped into wiki sections.
-  */
 
   const headings =
     Array.from(
-      doc.querySelectorAll(
-        "h2,h3,h4,h5"
-      )
+      doc.querySelectorAll("h2,h3,h4,h5")
     );
 
+  /*
+    IMPORTANT:
+    This flag becomes true after the General achievement
+    section is encountered.
 
-  function categoryForTable(table){
+    Every achievement table after General is marked as a
+    paid Job Pack achievement.
+  */
 
-    let best =
-      "General";
+  let generalSeen =
+    false;
 
-    for(const heading of headings){
-
-      if(
-        heading.compareDocumentPosition(table) &
-        Node.DOCUMENT_POSITION_FOLLOWING
-      ){
-
-        const text =
-          elementText(heading);
-
-        if(
-          text &&
-          !/achievement|list of achievements|special careers|expansion packs/i.test(text)
-        ){
-
-          best = text;
-
-        }
-
-      }else{
-
-        break;
-
-      }
-
-    }
-
-    return best;
-
-  }
-
-
-  for(const table of tables){
+  for(
+    const table
+    of tables
+  ){
 
     const parsed =
-      tableToRows(table);
-
+      tableToRows(
+        table
+      );
 
     if(!parsed){
       continue;
     }
 
-
     const headers =
       parsed.headers;
-
-
-    /*
-      This table isn't an achievement table.
-    */
 
     const achievementIndex =
       findColumn(
@@ -1466,18 +2011,17 @@ function parseAchievementTables(html){
         ["achievement"]
       );
 
-
-    if(achievementIndex === -1){
+    if(
+      achievementIndex === -1
+    ){
       continue;
     }
-
 
     const descriptionIndex =
       findColumn(
         headers,
         ["description"]
       );
-
 
     const purchaseIndex =
       findColumn(
@@ -1486,10 +2030,11 @@ function parseAchievementTables(html){
           "in app",
           "inapp",
           "purchase",
-          "requires in app"
+          "requires in app",
+          "paid",
+          "bitizenship"
         ]
       );
-
 
     const chanceIndex =
       findColumn(
@@ -1500,15 +2045,11 @@ function parseAchievementTables(html){
         ]
       );
 
-
     const difficultyIndex =
       findColumn(
         headers,
-        [
-          "difficulty"
-        ]
+        ["difficulty"]
       );
-
 
     const ribbonIndex =
       findColumn(
@@ -1520,16 +2061,41 @@ function parseAchievementTables(html){
         ]
       );
 
-
     const category =
-      categoryForTable(table);
+      categoryForTable(
+        table,
+        headings
+      );
 
+    /*
+      General itself is NOT automatically paid.
 
-    for(const cells of parsed.rows){
+      Once General has been encountered, subsequent tables
+      are considered paid Job Pack content.
+    */
 
-      /*
-        Ensure we have enough columns.
-      */
+    const tableIsGeneral =
+      isGeneralCategory(
+        category
+      );
+
+    if(
+      tableIsGeneral
+    ){
+
+      generalSeen =
+        true;
+
+    }
+
+    const paidAfterGeneral =
+      generalSeen &&
+      !tableIsGeneral;
+
+    for(
+      const cells
+      of parsed.rows
+    ){
 
       if(
         achievementIndex >= cells.length
@@ -1537,19 +2103,10 @@ function parseAchievementTables(html){
         continue;
       }
 
-
       let name =
         clean(
           cells[achievementIndex]
         );
-
-
-      /*
-        Some wiki tables use [Input] in a
-        separate column.
-
-        Try to find the actual name if necessary.
-      */
 
       if(
         !name ||
@@ -1566,16 +2123,13 @@ function parseAchievementTables(html){
 
       }
 
-
-      /*
-        Remove common junk.
-      */
-
       name =
         name
-          .replace(/^\[Input\]\s*/i,"")
+          .replace(
+            /^\[Input\]\s*/i,
+            ""
+          )
           .trim();
-
 
       if(
         !name ||
@@ -1586,24 +2140,26 @@ function parseAchievementTables(html){
         continue;
       }
 
-
       const description =
         descriptionIndex >= 0
-          ? clean(cells[descriptionIndex])
+          ? clean(
+              cells[descriptionIndex]
+            )
           : "";
-
 
       const purchase =
         purchaseIndex >= 0
-          ? clean(cells[purchaseIndex])
+          ? clean(
+              cells[purchaseIndex]
+            )
           : "";
-
 
       const chance =
         chanceIndex >= 0
-          ? clean(cells[chanceIndex])
+          ? clean(
+              cells[chanceIndex]
+            )
           : "";
-
 
       const difficulty =
         difficultyIndex >= 0
@@ -1612,36 +2168,44 @@ function parseAchievementTables(html){
             )
           : "Unknown";
 
-
       const ribbon =
         ribbonIndex >= 0
-          ? clean(cells[ribbonIndex])
+          ? clean(
+              cells[ribbonIndex]
+            )
           : "";
-
 
       const id =
         "achievement:" +
         slug(name);
 
-
-      /*
-        Avoid duplicate rows.
-      */
-
       if(
         output.some(
-          item => item.id === id
+          item =>
+            item.id === id
         )
       ){
         continue;
       }
 
+      /*
+        Explicit wiki paid status.
+
+        This is checked independently from the
+        post-General Job Pack rule.
+      */
+
+      const wikiSaysPaid =
+        paidInfo(
+          purchase
+        );
 
       output.push({
 
         id,
 
-        type:"achievement",
+        type:
+          "achievement",
 
         name,
 
@@ -1650,7 +2214,8 @@ function parseAchievementTables(html){
           "Description not provided on the source page.",
 
         category:
-          category || "General",
+          category ||
+          "General",
 
         purchase,
 
@@ -1659,6 +2224,21 @@ function parseAchievementTables(html){
         difficulty,
 
         ribbon,
+
+        /*
+          TRUE when:
+          1. The wiki explicitly says it is paid, OR
+          2. It appears after the General section.
+
+          Keep the two fields separate so the UI can tell
+          the user why it is paid.
+        */
+
+        wikiPaid:
+          wikiSaysPaid,
+
+        paidJobPack:
+          paidAfterGeneral,
 
         emoji:
           emojiFor(
@@ -1672,20 +2252,286 @@ function parseAchievementTables(html){
 
   }
 
-
   return output;
 
 }
 
 
-/*
-==========================================================
- RIBBON PARSER
-==========================================================
-*/
+/* ==========================================================
+   RIBBON BLOCK EXTRACTION
+========================================================== */
+
+function getHeadingBlock(
+  heading
+){
+
+  const nodes = [];
+
+  let node =
+    heading.nextElementSibling;
+
+  let safety = 0;
+
+  while(
+    node &&
+    safety < 100
+  ){
+
+    safety++;
+
+    if(
+      /^H[2-5]$/.test(
+        node.tagName
+      )
+    ){
+      break;
+    }
+
+    nodes.push(node);
+
+    node =
+      node.nextElementSibling;
+
+  }
+
+  return nodes;
+
+}
 
 
-function parseRibbons(html){
+/* ==========================================================
+   RIBBON DESCRIPTION PARSER
+========================================================== */
+
+function extractRibbonInfo(
+  heading
+){
+
+  const nodes =
+    getHeadingBlock(
+      heading
+    );
+
+  let difficulty =
+    "Unknown";
+
+  let intro =
+    "";
+
+  const procedures = [];
+  const notes = [];
+
+  let inProcedures =
+    false;
+
+  let inNotes =
+    false;
+
+  for(
+    const node
+    of nodes
+  ){
+
+    const text =
+      elementText(node);
+
+    if(!text){
+      continue;
+    }
+
+    const difficultyMatch =
+      text.match(
+        /Difficulty\s*:\s*(.+)/i
+      );
+
+    if(
+      difficultyMatch
+    ){
+
+      difficulty =
+        normalizeDifficulty(
+          difficultyMatch[1]
+        );
+
+    }
+
+    if(
+      /procedures?\s+to\s+get/i.test(text)
+    ){
+
+      inProcedures =
+        true;
+
+      inNotes =
+        false;
+
+    }
+
+    if(
+      /^notes?\s*:/i.test(text) ||
+      /^notes?$/i.test(text)
+    ){
+
+      inNotes =
+        true;
+
+      inProcedures =
+        false;
+
+    }
+
+    const listItems =
+      Array.from(
+        node.querySelectorAll("li")
+      );
+
+    if(
+      listItems.length
+    ){
+
+      for(
+        const li
+        of listItems
+      ){
+
+        const liText =
+          elementText(li);
+
+        if(!liText){
+          continue;
+        }
+
+        if(inNotes){
+
+          notes.push(
+            liText
+          );
+
+        }else{
+
+          procedures.push(
+            liText
+          );
+
+        }
+
+      }
+
+    }
+
+    if(
+      !intro &&
+      !inProcedures &&
+      !inNotes &&
+      text.length > 10 &&
+      !/^difficulty\s*:/i.test(text) &&
+      !/^the\s+.+\s+ribbon\.?$/i.test(text)
+    ){
+
+      intro =
+        text;
+
+    }
+
+  }
+
+  if(!intro){
+
+    for(
+      const node
+      of nodes
+    ){
+
+      const text =
+        elementText(node);
+
+      if(
+        text.length > 10 &&
+        !/^difficulty\s*:/i.test(text) &&
+        !/^the\s+.+\s+ribbon\.?$/i.test(text) &&
+        !/procedures?\s+to\s+get/i.test(text)
+      ){
+
+        intro =
+          text;
+
+        break;
+
+      }
+
+    }
+
+  }
+
+  if(
+    procedures.length === 0
+  ){
+
+    let procedureStarted =
+      false;
+
+    for(
+      const node
+      of nodes
+    ){
+
+      const text =
+        elementText(node);
+
+      if(
+        /procedures?\s+to\s+get/i.test(text)
+      ){
+
+        procedureStarted =
+          true;
+
+        continue;
+
+      }
+
+      if(
+        /^notes?\s*:/i.test(text)
+      ){
+
+        procedureStarted =
+          false;
+
+      }
+
+      if(
+        procedureStarted &&
+        text.length > 10
+      ){
+
+        procedures.push(
+          text
+        );
+
+      }
+
+    }
+
+  }
+
+  return {
+
+    difficulty,
+    intro,
+    procedures,
+    notes
+
+  };
+
+}
+
+
+/* ==========================================================
+   RIBBON PARSER
+========================================================== */
+
+function parseRibbons(
+  html
+){
 
   const parser =
     new DOMParser();
@@ -1696,189 +2542,215 @@ function parseRibbons(html){
       "text/html"
     );
 
-
   const output = [];
-
-
-  /*
-    The Ribbons page can contain headings rather than
-    one consistent table.
-
-    Find headings that look like actual ribbon names.
-  */
 
   const headings =
     Array.from(
-      doc.querySelectorAll(
-        "h2,h3,h4,h5"
-      )
+      doc.querySelectorAll("h2,h3,h4,h5")
     );
 
+  const excludedNames =
+    new Set([
 
-  for(let i=0;i<headings.length;i++){
+      "ribbons",
+      "regular ribbons",
+      "secret ribbons",
+      "launched on ios",
+      "launched on ios:",
+      "launched on android",
+      "launched on android:",
+      "contents",
+      "navigation",
+      "references",
+      "notes",
+      "external links"
 
-    const heading =
-      headings[i];
+    ]);
 
+  for(
+    const heading
+    of headings
+  ){
 
     const name =
       clean(
-        elementText(heading)
-      );
+        elementText(
+          heading
+        )
+      )
+      .replace(
+        /\[\s*\]/g,
+        ""
+      )
+      .trim();
 
-
-    if(
-      !name ||
-      /^(ribbons|regular ribbons|secret ribbons)$/i.test(name)
-    ){
+    if(!name){
       continue;
     }
 
-
-    /*
-      Ignore generic section headings.
-    */
-
-    if(
-      /^(contents|navigation|references|notes|external links)$/i.test(name)
-    ){
-      continue;
-    }
-
-
-    /*
-      Find content after the heading and before
-      the next heading.
-
-      We collect paragraphs and list items.
-    */
-
-    let description = "";
-
-    let difficulty = "Unknown";
-
-
-    let node =
-      heading.nextElementSibling;
-
-
-    let safety = 0;
-
-
-    while(
-      node &&
-      safety < 20
-    ){
-
-      safety++;
-
-
-      /*
-        Stop when another heading starts.
-      */
-
-      if(
-        /^H[2-5]$/.test(node.tagName)
-      ){
-        break;
-      }
-
-
-      const text =
-        elementText(node);
-
-
-      if(text){
-
-        const diff =
-          text.match(
-            /^Difficulty\s*:\s*(.+)$/i
-          );
-
-
-        if(diff){
-
-          difficulty =
-            normalizeDifficulty(
-              diff[1]
-            );
-
-        }else if(
-          !description &&
-          text.length > 10 &&
-          !/^the .+ ribbon\.?$/i.test(text)
-        ){
-
-          description =
-            text;
-
-        }
-
-      }
-
-
-      node =
-        node.nextElementSibling;
-
-    }
-
-
-    const id =
-      "ribbon:" +
-      slug(name);
-
+    const normalized =
+      name
+        .toLowerCase()
+        .replace(
+          /:+$/,
+          ""
+        )
+        .trim();
 
     if(
-      output.some(
-        item => item.id === id
+      excludedNames.has(
+        normalized
       )
     ){
       continue;
     }
 
-
-    /*
-      Avoid accidentally treating page sections as
-      ribbons.
-    */
-
     if(
-      name.length > 80
+      /^launched\s+on\s+(ios|android)/i.test(name)
     ){
       continue;
     }
 
+    if(
+      /^(regular|secret)\s+ribbons?$/i.test(name)
+    ){
+      continue;
+    }
+
+    const info =
+      extractRibbonInfo(
+        heading
+      );
+
+    if(
+      info.difficulty === "Unknown"
+    ){
+      continue;
+    }
+
+    const cleanName =
+      name
+        .replace(
+          /\[\s*\]/g,
+          ""
+        )
+        .replace(
+          /\s+$/,
+          ""
+        )
+        .trim();
+
+    if(!cleanName){
+      continue;
+    }
+
+    if(
+      cleanName.length > 80
+    ){
+      continue;
+    }
+
+    if(
+      /^(difficulty|procedures?|notes?|how to|description)$/i.test(cleanName)
+    ){
+      continue;
+    }
+
+    const id =
+      "ribbon:" +
+      slug(cleanName);
+
+    if(
+      output.some(
+        item =>
+          item.id === id
+      )
+    ){
+      continue;
+    }
+
+    const procedureList =
+      info.procedures
+        .map(
+          x =>
+            clean(x)
+        )
+        .filter(Boolean)
+        .slice(0,5);
+
+    const noteText =
+      info.notes
+        .map(
+          x =>
+            clean(x)
+        )
+        .filter(Boolean)
+        .slice(0,2);
+
+    let howTo =
+      procedureList;
+
+    if(
+      howTo.length === 0 &&
+      info.intro
+    ){
+
+      howTo = [
+        clean(
+          info.intro
+        )
+      ];
+
+    }
+
+    const combinedRibbonText =
+      [
+        info.intro,
+        ...procedureList,
+        ...noteText
+      ].join(" ");
 
     output.push({
 
       id,
 
-      type:"ribbon",
+      type:
+        "ribbon",
 
-      name,
+      name:
+        cleanName,
 
       description:
-        description ||
-        "Description not provided on the source page.",
+        info.intro ||
+        "Click to see how to get this ribbon.",
 
-      category:"Ribbons",
+      howTo,
 
-      purchase:"",
+      notes:
+        noteText,
+
+      category:
+        "Ribbons",
+
+      purchase:
+        "",
 
       chance:
         /luck|random|chance/i.test(
-          description
+          combinedRibbonText
         )
           ? "Yes"
           : "",
 
-      difficulty,
+      difficulty:
+        info.difficulty,
 
-      ribbon:"",
+      ribbon:
+        "",
 
       emoji:
         emojiFor(
-          name,
+          cleanName,
           "ribbon"
         )
 
@@ -1886,35 +2758,31 @@ function parseRibbons(html){
 
   }
 
-
   return output;
 
 }
 
 
-/*
-==========================================================
- FANDOM API
-==========================================================
-*/
+/* ==========================================================
+   FANDOM API
+========================================================== */
 
-
-async function fetchWikiPage(page){
+async function fetchWikiPage(
+  page
+){
 
   const url =
     API[page];
 
-
   const controller =
     new AbortController();
 
-
   const timeout =
     setTimeout(
-      () => controller.abort(),
+      () =>
+        controller.abort(),
       20000
     );
-
 
   try{
 
@@ -1922,18 +2790,27 @@ async function fetchWikiPage(page){
       await fetch(
         url,
         {
+
           method:"GET",
+
           cache:"no-store",
+
           credentials:"omit",
-          signal:controller.signal,
+
+          signal:
+            controller.signal,
+
           headers:{
-            "Accept":"application/json"
+            "Accept":
+              "application/json"
           }
+
         }
       );
 
-
-    if(!response.ok){
+    if(
+      !response.ok
+    ){
 
       throw new Error(
         "Fandom API returned HTTP " +
@@ -1942,10 +2819,8 @@ async function fetchWikiPage(page){
 
     }
 
-
     const data =
       await response.json();
-
 
     if(
       data.error
@@ -1959,22 +2834,7 @@ async function fetchWikiPage(page){
 
     }
 
-
-    /*
-      formatversion=2 gives:
-
-      data.parse.text
-
-      as a string.
-
-      Older API versions can return:
-
-      data.parse.text["*"]
-
-    */
-
     let html = "";
-
 
     if(
       data.parse &&
@@ -1995,7 +2855,6 @@ async function fetchWikiPage(page){
 
     }
 
-
     if(!html){
 
       throw new Error(
@@ -2003,7 +2862,6 @@ async function fetchWikiPage(page){
       );
 
     }
-
 
     return html;
 
@@ -2019,38 +2877,31 @@ async function fetchWikiPage(page){
 
     }
 
-
     throw error;
 
   }finally{
 
-    clearTimeout(timeout);
+    clearTimeout(
+      timeout
+    );
 
   }
 
 }
 
 
-/*
-==========================================================
- FALLBACK PAGE FETCH
-==========================================================
+/* ==========================================================
+   FALLBACK PAGE FETCH
+========================================================== */
 
-This is only a secondary attempt.
-
-The API is preferred because it gives us the wiki
-content without the normal Fandom page shell.
-==========================================================
-*/
-
-
-async function fetchNormalPage(page){
+async function fetchNormalPage(
+  page
+){
 
   const url =
     WIKI +
     "/wiki/" +
     encodeURIComponent(page);
-
 
   const response =
     await fetch(
@@ -2061,8 +2912,9 @@ async function fetchNormalPage(page){
       }
     );
 
-
-  if(!response.ok){
+  if(
+    !response.ok
+  ){
 
     throw new Error(
       "Normal Fandom page returned HTTP " +
@@ -2071,35 +2923,28 @@ async function fetchNormalPage(page){
 
   }
 
-
   return await response.text();
 
 }
 
 
-/*
-==========================================================
- SYNC WIKI
-==========================================================
-*/
-
+/* ==========================================================
+   SYNC
+========================================================== */
 
 async function syncWiki(){
 
   const syncButton =
     $("sync");
 
-
-  syncButton.disabled = true;
-
+  syncButton.disabled =
+    true;
 
   $("notice").className =
     "notice";
 
-
   $("notice").innerHTML =
     "🔄 Connecting to the BitLife wiki…";
-
 
   $("content").innerHTML =
     `
@@ -2109,20 +2954,10 @@ async function syncWiki(){
       </div>
     `;
 
-
   try{
 
     let achievementHTML;
     let ribbonHTML;
-
-
-    /*
-      Fetch both pages independently.
-
-      This makes it possible to identify which page
-      failed rather than just getting a generic Promise
-      rejection.
-    */
 
     try{
 
@@ -2137,10 +2972,6 @@ async function syncWiki(){
         "Achievements API error:",
         error
       );
-
-      /*
-        Try the normal page as a fallback.
-      */
 
       try{
 
@@ -2160,7 +2991,6 @@ async function syncWiki(){
 
     }
 
-
     try{
 
       ribbonHTML =
@@ -2174,7 +3004,6 @@ async function syncWiki(){
         "Ribbons API error:",
         error
       );
-
 
       try{
 
@@ -2194,22 +3023,33 @@ async function syncWiki(){
 
     }
 
-
-    /*
-      Parse the downloaded pages.
-    */
-
     const achievements =
       parseAchievementTables(
         achievementHTML
       );
-
 
     const ribbons =
       parseRibbons(
         ribbonHTML
       );
 
+    const paidAchievements =
+      achievements.filter(
+        item =>
+          itemIsPaid(item)
+      ).length;
+
+    const jobPackAchievements =
+      achievements.filter(
+        item =>
+          item.paidJobPack
+      ).length;
+
+    const wikiPaidAchievements =
+      achievements.filter(
+        item =>
+          item.wikiPaid
+      ).length;
 
     console.log(
       "Wiki sync results:",
@@ -2218,50 +3058,39 @@ async function syncWiki(){
           achievements.length,
 
         ribbons:
-          ribbons.length
+          ribbons.length,
+
+        paidAchievements,
+
+        jobPackAchievements,
+
+        wikiPaidAchievements
       }
     );
-
-
-    /*
-      Do not replace the current data with an obviously
-      broken result.
-
-      The achievement page should contain a large number
-      of entries. We use a conservative sanity check.
-    */
 
     if(
       achievements.length < 50
     ){
 
       throw new Error(
-        "The wiki was reached, but the Achievements parser " +
-        "only found " +
+        "The wiki was reached, but the Achievements parser only found " +
         achievements.length +
         " items. The wiki structure may have changed."
       );
 
     }
 
-
     if(
       ribbons.length < 10
     ){
 
       throw new Error(
-        "The wiki was reached, but the Ribbons parser " +
-        "only found " +
+        "The wiki was reached, but the Ribbons parser only found " +
         ribbons.length +
         " items. The wiki structure may have changed."
       );
 
     }
-
-
-    /*
-      Success.
-    */
 
     state.achievements =
       achievements;
@@ -2269,24 +3098,32 @@ async function syncWiki(){
     state.ribbons =
       ribbons;
 
-
     populateCategories();
-
 
     $("notice").className =
       "notice success";
-
 
     $("notice").innerHTML =
       "✓ Wiki synced successfully — " +
       achievements.length +
       " achievements and " +
       ribbons.length +
-      " ribbons loaded.";
+      " ribbons loaded." +
 
+      "<small>" +
+
+      paidAchievements +
+      " achievements marked paid • " +
+
+      jobPackAchievements +
+      " marked as Job Pack content • " +
+
+      wikiPaidAchievements +
+      " explicitly marked paid by the wiki." +
+
+      "</small>";
 
     render();
-
 
   }catch(error){
 
@@ -2295,14 +3132,14 @@ async function syncWiki(){
       error
     );
 
-
     $("notice").className =
       "notice error";
 
-
     $("notice").innerHTML =
       `
-        ⚠️ <strong>Could not sync the wiki.</strong>
+        ⚠️ <strong>
+          Could not sync the wiki.
+        </strong>
 
         <br>
 
@@ -2317,18 +3154,11 @@ async function syncWiki(){
         </small>
 
         <small>
-          Open your browser console with F12 → Console
-          if you need more technical information.
+          Open your browser console with
+          F12 → Console if you need more
+          technical information.
         </small>
       `;
-
-
-    /*
-      If we have old data, continue displaying it.
-
-      This is important because the user may already
-      have synced successfully before.
-    */
 
     if(
       state.achievements.length ||
@@ -2342,13 +3172,14 @@ async function syncWiki(){
       $("content").innerHTML =
         `
           <div class="empty">
-
             ⚠️ The wiki could not be loaded.
 
             <br><br>
 
-            Press <strong>Sync Wiki</strong> to try again.
-
+            Press <strong>
+              Sync Wiki
+            </strong>
+            to try again.
           </div>
         `;
 
@@ -2356,41 +3187,41 @@ async function syncWiki(){
 
   }finally{
 
-    syncButton.disabled = false;
+    syncButton.disabled =
+      false;
 
   }
 
 }
 
 
-/*
-==========================================================
- CATEGORIES
-==========================================================
-*/
-
+/* ==========================================================
+   CATEGORIES
+========================================================== */
 
 function populateCategories(){
 
   const select =
     $("category");
 
-
   const current =
     select.value;
 
-
   const categories =
     [
-      ...new Set([
-        ...state.achievements.map(
-          item => item.category
-        ),
+      ...new Set(
+        [
+          ...state.achievements.map(
+            item =>
+              item.category
+          ),
 
-        ...state.ribbons.map(
-          item => item.category
-        )
-      ])
+          ...state.ribbons.map(
+            item =>
+              item.category
+          )
+        ]
+      )
     ]
       .filter(Boolean)
       .sort(
@@ -2398,24 +3229,25 @@ function populateCategories(){
           a.localeCompare(b)
       );
 
-
   select.innerHTML =
     `
       <option value="all">
         All categories
       </option>
     ` +
+
     categories
       .map(
         category =>
           `
-            <option value="${escapeHTML(category)}">
+            <option
+              value="${escapeHTML(category)}"
+            >
               ${escapeHTML(category)}
             </option>
           `
       )
       .join("");
-
 
   if(
     categories.includes(current)
@@ -2429,82 +3261,88 @@ function populateCategories(){
     state.category =
       "all";
 
+    select.value =
+      "all";
+
   }
 
 }
 
 
-/*
-==========================================================
- ESCAPE HTML
-==========================================================
-*/
+/* ==========================================================
+   ESCAPE HTML
+========================================================== */
 
+function escapeHTML(
+  value
+){
 
-function escapeHTML(value){
-
-  return String(value ?? "")
-    .replace(/&/g,"&amp;")
-    .replace(/</g,"&lt;")
-    .replace(/>/g,"&gt;")
-    .replace(/"/g,"&quot;")
-    .replace(/'/g,"&#039;");
+  return String(
+    value ?? ""
+  )
+    .replace(
+      /&/g,
+      "&amp;"
+    )
+    .replace(
+      /</g,
+      "&lt;"
+    )
+    .replace(
+      />/g,
+      "&gt;"
+    )
+    .replace(
+      /"/g,
+      "&quot;"
+    )
+    .replace(
+      /'/g,
+      "&#039;"
+    );
 
 }
 
 
-/*
-==========================================================
- FILTERING
-==========================================================
-*/
+/* ==========================================================
+   FILTERING
+========================================================== */
 
-
-function matches(item){
+function matches(
+  item
+){
 
   const q =
     state.search
       .toLowerCase()
       .trim();
 
-
-  const searchable = [
-
-    item.name,
-
-    item.description,
-
-    item.category,
-
-    item.difficulty,
-
-    item.ribbon,
-
-    item.purchase,
-
-    item.chance
-
-  ]
-    .join(" ")
-    .toLowerCase();
-
+  const searchable =
+    [
+      item.name,
+      item.description,
+      item.category,
+      item.difficulty,
+      item.ribbon,
+      item.purchase,
+      item.chance,
+      ...(item.howTo || []),
+      ...(item.notes || [])
+    ]
+      .join(" ")
+      .toLowerCase();
 
   const searchMatch =
     !q ||
     searchable.includes(q);
 
-
   const categoryMatch =
     state.category === "all" ||
-    item.category ===
-      state.category;
-
+    item.category === state.category;
 
   const difficultyMatch =
     state.difficulty === "all" ||
-    item.difficulty ===
-      state.difficulty;
-
+    item.difficulty === state.difficulty;
 
   return (
     searchMatch &&
@@ -2515,29 +3353,94 @@ function matches(item){
 }
 
 
-/*
-==========================================================
- RENDER
-==========================================================
-*/
+/* ==========================================================
+   INCLUDED IN TOTALS
+========================================================== */
 
+function includedInTotals(item){
+
+  return (
+    state.includePaid ||
+    !itemIsPaid(item)
+  );
+
+}
+
+
+/* ==========================================================
+   RECOMMENDED ACHIEVEMENTS
+========================================================== */
+
+function getRecommendedAchievements(){
+
+  return state.achievements
+
+    .filter(
+      item =>
+        !state.checked[item.id]
+    )
+
+    .filter(
+      item =>
+        includedInTotals(item)
+    )
+
+    .filter(
+      item =>
+        matches(item)
+    )
+
+    .sort(
+      (a,b) => {
+
+        const difficultyDifference =
+          difficultyRank(a.difficulty) -
+          difficultyRank(b.difficulty);
+
+        if(
+          difficultyDifference !== 0
+        ){
+
+          return difficultyDifference;
+
+        }
+
+        return a.name.localeCompare(
+          b.name
+        );
+
+      }
+    )
+
+    .slice(
+      0,
+      2
+    );
+
+}
+
+
+/* ==========================================================
+   RENDER
+========================================================== */
 
 function render(){
 
   updateStats();
-
 
   const source =
     state.activeTab === "achievements"
       ? state.achievements
       : state.ribbons;
 
-
   const filtered =
-    source.filter(matches);
+    source.filter(
+      matches
+    );
 
-
-  if(!filtered.length){
+  if(
+    !filtered.length
+  ){
 
     $("content").innerHTML =
       `
@@ -2550,12 +3453,6 @@ function render(){
 
   }
 
-
-  /*
-    Incomplete items first.
-    Completed items go to the bottom.
-  */
-
   const ordered =
     [...filtered].sort(
       (a,b) => {
@@ -2565,7 +3462,6 @@ function render(){
 
         const bDone =
           !!state.checked[b.id];
-
 
         if(
           aDone !== bDone
@@ -2577,7 +3473,6 @@ function render(){
 
         }
 
-
         return (
           source.indexOf(a) -
           source.indexOf(b)
@@ -2586,38 +3481,117 @@ function render(){
       }
     );
 
-
   const groups = {};
 
+  ordered.forEach(
+    item => {
 
-  ordered.forEach(item => {
+      const key =
+        item.category ||
+        "General";
 
-    const key =
-      item.category ||
-      "General";
+      if(
+        !groups[key]
+      ){
 
+        groups[key] = [];
 
-    if(!groups[key]){
-      groups[key] = [];
+      }
+
+      groups[key].push(
+        item
+      );
+
+    }
+  );
+
+  let html = "";
+
+  /*
+    Recommended section only appears on the
+    Achievements tab.
+  */
+
+  if(
+    state.activeTab === "achievements"
+  ){
+
+    const recommended =
+      getRecommendedAchievements();
+
+    if(
+      recommended.length
+    ){
+
+      html +=
+        `
+          <section class="section recommended">
+
+            <div class="section-title">
+
+              <div>
+
+                <div class="recommended-title">
+
+                  <span>⭐</span>
+
+                  <h2>
+                    Recommended
+                  </h2>
+
+                </div>
+
+                <div class="recommended-subtitle">
+
+                  Your two easiest incomplete achievements
+
+                </div>
+
+              </div>
+
+              <div class="section-count">
+
+                ${recommended.length}
+                suggested
+
+              </div>
+
+            </div>
+
+            <div class="recommended-grid">
+
+              ${recommended
+                .map(
+                  renderRecommendedAchievement
+                )
+                .join("")}
+
+            </div>
+
+          </section>
+        `;
+
     }
 
+  }
 
-    groups[key].push(item);
-
-  });
-
-
-  $("content").innerHTML =
-    Object.entries(groups)
+  html +=
+    Object.entries(
+      groups
+    )
       .map(
         ([category,items]) => {
 
-          const done =
+          const includedItems =
             items.filter(
+              includedInTotals
+            );
+
+          const done =
+            includedItems.filter(
               item =>
                 state.checked[item.id]
             ).length;
-
 
           return `
             <section class="section">
@@ -2629,17 +3603,28 @@ function render(){
                 </h2>
 
                 <div class="section-count">
-                  ${done} / ${items.length}
+
+                  ${done}
+                  /
+                  ${includedItems.length}
                   complete
+
+                  ${
+                    state.includePaid
+                      ? ""
+                      : " • paid excluded"
+                  }
+
                 </div>
 
               </div>
 
-
               <div class="items">
 
                 ${items
-                  .map(renderItem)
+                  .map(
+                    renderItem
+                  )
                   .join("")}
 
               </div>
@@ -2651,60 +3636,197 @@ function render(){
       )
       .join("");
 
+  $("content").innerHTML =
+    html;
 
-  /*
-    Checkbox handlers.
-  */
-
-  document
-    .querySelectorAll(".checkbox")
-    .forEach(box => {
-
-      box.addEventListener(
-        "change",
-        () => {
-
-          state.checked[
-            box.dataset.id
-          ] = box.checked;
-
-
-          save();
-
-          render();
-
-        }
-      );
-
-    });
+  attachItemHandlers();
 
 }
 
 
-/*
-==========================================================
- ITEM
-==========================================================
-*/
+/* ==========================================================
+   ATTACH ITEM HANDLERS
+========================================================== */
 
+function attachItemHandlers(){
 
-function renderItem(item){
+  document
+    .querySelectorAll(
+      ".achievement-checkbox"
+    )
+    .forEach(
+      box => {
 
-  const checked =
-    !!state.checked[item.id];
+        box.addEventListener(
+          "change",
+          () => {
 
+            state.checked[
+              box.dataset.id
+            ] =
+              box.checked;
 
-  const paid =
-    paidInfo(
-      item.purchase
+            save();
+
+            render();
+
+          }
+        );
+
+      }
     );
 
+  document
+    .querySelectorAll(
+      ".ribbon-checkbox"
+    )
+    .forEach(
+      box => {
+
+        box.addEventListener(
+          "change",
+          event => {
+
+            event.stopPropagation();
+
+            state.checked[
+              box.dataset.id
+            ] =
+              box.checked;
+
+            save();
+
+            render();
+
+          }
+        );
+
+      }
+    );
+
+  document
+    .querySelectorAll(
+      ".ribbon-header"
+    )
+    .forEach(
+      header => {
+
+        header.addEventListener(
+          "click",
+          () => {
+
+            const item =
+              header.closest(
+                ".ribbon-item"
+              );
+
+            if(!item){
+              return;
+            }
+
+            item.classList.toggle(
+              "expanded"
+            );
+
+            header.setAttribute(
+              "aria-expanded",
+              item.classList.contains(
+                "expanded"
+              )
+            );
+
+          }
+        );
+
+        header.addEventListener(
+          "keydown",
+          event => {
+
+            if(
+              event.key === "Enter" ||
+              event.key === " "
+            ){
+
+              event.preventDefault();
+
+              header.click();
+
+            }
+
+          }
+        );
+
+      }
+    );
+
+}
+
+
+/* ==========================================================
+   RENDER ITEM
+========================================================== */
+
+function renderItem(
+  item
+){
+
+  if(
+    item.type === "ribbon"
+  ){
+
+    return renderRibbon(
+      item
+    );
+
+  }
+
+  return renderAchievement(
+    item
+  );
+
+}
+
+
+/* ==========================================================
+   RENDER RECOMMENDED ACHIEVEMENT
+========================================================== */
+
+function renderRecommendedAchievement(
+  item
+){
+
+  return renderAchievement(
+    item,
+    true
+  );
+
+}
+
+
+/* ==========================================================
+   RENDER ACHIEVEMENT
+========================================================== */
+
+function renderAchievement(
+  item,
+  recommended = false
+){
+
+  const checked =
+    !!state.checked[
+      item.id
+    ];
+
+  const paid =
+    itemIsPaid(item);
+
+  const jobPack =
+    isJobPackAchievement(item);
 
   const rng =
     rngInfo(
       item.chance
     );
-
 
   const difficulty =
     item.difficulty &&
@@ -2712,7 +3834,9 @@ function renderItem(item){
 
       ? `
         <span
-          class="badge difficulty ${difficultyClass(item.difficulty)}"
+          class="badge difficulty ${difficultyClass(
+            item.difficulty
+          )}"
         >
           ${escapeHTML(
             item.difficulty
@@ -2722,9 +3846,27 @@ function renderItem(item){
 
       : "";
 
+  /*
+    Job Pack gets its own badge.
+  */
+
+  const jobPackBadge =
+    jobPack
+
+      ? `
+        <span class="badge paid">
+          🎟️ JOB PACK
+        </span>
+      `
+
+      : "";
+
+  /*
+    Explicit wiki-paid content gets the normal paid badge.
+  */
 
   const paidBadge =
-    paid
+    paid && !jobPack
 
       ? `
         <span class="badge paid">
@@ -2733,7 +3875,6 @@ function renderItem(item){
       `
 
       : "";
-
 
   const rngBadge =
     rng
@@ -2746,14 +3887,14 @@ function renderItem(item){
 
       : "";
 
-
   const ribbonBadge =
     item.ribbon &&
     !/^no$/i.test(item.ribbon)
 
       ? `
         <span class="badge ribbon">
-          🎗️ ${escapeHTML(
+          🎗️
+          ${escapeHTML(
             item.ribbon
           )}
         </span>
@@ -2761,9 +3902,8 @@ function renderItem(item){
 
       : "";
 
-
   const purchaseText =
-    paid &&
+    item.wikiPaid &&
     item.purchase
 
       ? `
@@ -2777,17 +3917,20 @@ function renderItem(item){
 
       : "";
 
-
   return `
     <article
-      class="item ${checked ? "done" : ""}"
+      class="item ${
+        checked
+          ? "done"
+          : ""
+      } ${recommended ? "recommended-item" : ""}"
       data-diff="${escapeHTML(
         item.difficulty
       )}"
     >
 
       <input
-        class="checkbox"
+        class="checkbox achievement-checkbox"
         type="checkbox"
         data-id="${escapeHTML(
           item.id
@@ -2797,7 +3940,6 @@ function renderItem(item){
           item.name
         )} complete"
       >
-
 
       <div class="item-main">
 
@@ -2815,17 +3957,19 @@ function renderItem(item){
 
         </div>
 
-
         <div class="description">
+
           ${escapeHTML(
             item.description
           )}
-        </div>
 
+        </div>
 
         <div class="meta">
 
           ${difficulty}
+
+          ${jobPackBadge}
 
           ${paidBadge}
 
@@ -2839,14 +3983,206 @@ function renderItem(item){
 
       </div>
 
+    </article>
+  `;
 
-      <div class="item-side">
+}
 
-        ${
-          item.type === "achievement"
-            ? "ACHIEVEMENT"
-            : "RIBBON"
-        }
+
+/* ==========================================================
+   RENDER RIBBON
+========================================================== */
+
+function renderRibbon(
+  item
+){
+
+  const checked =
+    !!state.checked[
+      item.id
+    ];
+
+  const paid =
+    itemIsPaid(item);
+
+  const difficulty =
+    item.difficulty &&
+    item.difficulty !== "Unknown"
+
+      ? `
+        <span
+          class="badge difficulty ${difficultyClass(
+            item.difficulty
+          )}"
+        >
+          ${escapeHTML(
+            item.difficulty
+          )}
+        </span>
+      `
+
+      : "";
+
+  const paidBadge =
+    paid
+
+      ? `
+        <span class="badge paid">
+          💳 PAID / BITIZEN
+        </span>
+      `
+
+      : "";
+
+  const howTo =
+    (item.howTo || [])
+      .map(
+        text =>
+          clean(text)
+      )
+      .filter(Boolean);
+
+  const notes =
+    (item.notes || [])
+      .map(
+        text =>
+          clean(text)
+      )
+      .filter(Boolean);
+
+  let howToHTML = "";
+
+  if(
+    howTo.length
+  ){
+
+    howToHTML =
+      `
+        <ul>
+
+          ${howTo
+            .map(
+              step =>
+                `
+                  <li>
+                    ${escapeHTML(step)}
+                  </li>
+                `
+            )
+            .join("")}
+
+        </ul>
+      `;
+
+  }else{
+
+    howToHTML =
+      `
+        <div>
+          No detailed procedure was found on the wiki.
+        </div>
+      `;
+
+  }
+
+  const notesHTML =
+    notes.length
+
+      ? `
+        <div class="ribbon-notes">
+
+          <strong>
+            Notes:
+          </strong>
+
+          ${escapeHTML(
+            notes.join(" ")
+          )}
+
+        </div>
+      `
+
+      : "";
+
+  return `
+    <article
+      class="ribbon-item ${
+        checked
+          ? "done"
+          : ""
+      }"
+    >
+
+      <input
+        class="checkbox ribbon-checkbox"
+        type="checkbox"
+        data-id="${escapeHTML(
+          item.id
+        )}"
+        ${checked ? "checked" : ""}
+        aria-label="Mark ${escapeHTML(
+          item.name
+        )} ribbon complete"
+      >
+
+      <div
+        class="ribbon-header"
+        role="button"
+        tabindex="0"
+        aria-expanded="false"
+      >
+
+        <div>
+
+          <div class="ribbon-title">
+
+            <span class="emoji">
+              ${item.emoji}
+            </span>
+
+            <span class="ribbon-title-name">
+
+              ${escapeHTML(
+                item.name
+              )}
+
+            </span>
+
+          </div>
+
+          <div class="ribbon-subtitle">
+
+            Click to see how to get this ribbon
+
+          </div>
+
+          <div class="meta">
+
+            ${difficulty}
+
+            ${paidBadge}
+
+          </div>
+
+        </div>
+
+        <div class="ribbon-arrow">
+          ▼
+        </div>
+
+      </div>
+
+      <div class="ribbon-details">
+
+        <div class="ribbon-how-title">
+          How to get this ribbon
+        </div>
+
+        <div class="ribbon-how">
+          ${howToHTML}
+        </div>
+
+        ${notesHTML}
 
       </div>
 
@@ -2856,111 +4192,122 @@ function renderItem(item){
 }
 
 
-/*
-==========================================================
- STATISTICS
-==========================================================
-*/
-
+/* ==========================================================
+   STATISTICS
+========================================================== */
 
 function updateStats(){
 
-  const totalA =
-    state.achievements.length;
+  /*
+    Paid items are removed from totals when the checkbox
+    is disabled. The actual checklist still displays them.
+  */
 
+  const includedAchievements =
+    state.achievements.filter(
+      includedInTotals
+    );
+
+  const includedRibbons =
+    state.ribbons.filter(
+      includedInTotals
+    );
+
+  const totalA =
+    includedAchievements.length;
 
   const totalR =
-    state.ribbons.length;
-
+    includedRibbons.length;
 
   const doneA =
-    state.achievements.filter(
+    includedAchievements.filter(
       item =>
         state.checked[item.id]
     ).length;
-
 
   const doneR =
-    state.ribbons.filter(
+    includedRibbons.filter(
       item =>
         state.checked[item.id]
     ).length;
-
 
   const total =
     totalA + totalR;
 
-
   const done =
     doneA + doneR;
-
 
   const pct =
     total
       ? Math.round(
-          done / total * 100
+          done /
+          total *
+          100
         )
       : 0;
 
+  $("overallPct")
+    .textContent =
+      pct + "%";
 
-  $("overallPct").textContent =
-    pct + "%";
+  $("overallBar")
+    .style.width =
+      pct + "%";
 
+  $("achievementCount")
+    .textContent =
+      doneA +
+      " / " +
+      totalA;
 
-  $("overallBar").style.width =
-    pct + "%";
+  $("ribbonCount")
+    .textContent =
+      doneR +
+      " / " +
+      totalR;
 
+  $("achievementBar")
+    .style.width =
+      (
+        totalA
+          ? doneA /
+            totalA *
+            100
+          : 0
+      ) + "%";
 
-  $("achievementCount").textContent =
-    doneA +
-    " / " +
-    totalA;
+  $("ribbonBar")
+    .style.width =
+      (
+        totalR
+          ? doneR /
+            totalR *
+            100
+          : 0
+      ) + "%";
 
+  $("remaining")
+    .textContent =
+      total - done;
 
-  $("ribbonCount").textContent =
-    doneR +
-    " / " +
-    totalR;
-
-
-  $("achievementBar").style.width =
-    (
-      totalA
-        ? doneA / totalA * 100
-        : 0
-    ) + "%";
-
-
-  $("ribbonBar").style.width =
-    (
-      totalR
-        ? doneR / totalR * 100
-        : 0
-    ) + "%";
-
-
-  $("remaining").textContent =
-    total - done;
-
-
-  $("remainingBar").style.width =
-    (
-      total
-        ? (total - done) /
-          total *
-          100
-        : 0
-    ) + "%";
+  $("remainingBar")
+    .style.width =
+      (
+        total
+          ? (
+              total - done
+            ) /
+            total *
+            100
+          : 0
+      ) + "%";
 
 }
 
 
-/*
-==========================================================
- RESET
-==========================================================
-*/
-
+/* ==========================================================
+   RESET
+========================================================== */
 
 function resetProgress(){
 
@@ -2970,126 +4317,145 @@ function resetProgress(){
       "This cannot be undone."
     )
   ){
+
     return;
+
   }
 
-
-  state.checked = {};
-
+  state.checked =
+    {};
 
   save();
-
 
   render();
 
 }
 
 
-/*
-==========================================================
- EVENTS
-==========================================================
-*/
+/* ==========================================================
+   EVENTS
+========================================================== */
+
+$("search")
+  .addEventListener(
+    "input",
+    event => {
+
+      state.search =
+        event.target.value;
+
+      render();
+
+    }
+  );
 
 
-$("search").addEventListener(
-  "input",
-  event => {
+$("category")
+  .addEventListener(
+    "change",
+    event => {
 
-    state.search =
-      event.target.value;
+      state.category =
+        event.target.value;
 
-    render();
+      render();
 
-  }
-);
-
-
-$("category").addEventListener(
-  "change",
-  event => {
-
-    state.category =
-      event.target.value;
-
-    render();
-
-  }
-);
+    }
+  );
 
 
-$("difficulty").addEventListener(
-  "change",
-  event => {
+$("difficulty")
+  .addEventListener(
+    "change",
+    event => {
 
-    state.difficulty =
-      event.target.value;
+      state.difficulty =
+        event.target.value;
 
-    render();
+      render();
 
-  }
-);
-
-
-$("sync").addEventListener(
-  "click",
-  syncWiki
-);
+    }
+  );
 
 
-$("reset").addEventListener(
-  "click",
-  resetProgress
-);
+$("includePaid")
+  .addEventListener(
+    "change",
+    event => {
+
+      state.includePaid =
+        event.target.checked;
+
+      save();
+
+      render();
+
+    }
+  );
+
+
+$("sync")
+  .addEventListener(
+    "click",
+    syncWiki
+  );
+
+
+$("reset")
+  .addEventListener(
+    "click",
+    resetProgress
+  );
 
 
 document
-  .querySelectorAll(".tab")
-  .forEach(tab => {
+  .querySelectorAll(
+    ".tab"
+  )
+  .forEach(
+    tab => {
 
-    tab.addEventListener(
-      "click",
-      () => {
+      tab.addEventListener(
+        "click",
+        () => {
 
-        document
-          .querySelectorAll(".tab")
-          .forEach(
-            x =>
-              x.classList.remove(
-                "active"
-              )
+          document
+            .querySelectorAll(
+              ".tab"
+            )
+            .forEach(
+              x =>
+                x.classList.remove(
+                  "active"
+                )
+            );
+
+          tab.classList.add(
+            "active"
           );
 
+          state.activeTab =
+            tab.dataset.tab;
 
-        tab.classList.add(
-          "active"
-        );
+          render();
 
+        }
+      );
 
-        state.activeTab =
-          tab.dataset.tab;
-
-
-        render();
-
-      }
-    );
-
-  });
+    }
+  );
 
 
-/*
-==========================================================
- START
-==========================================================
-*/
-
+/* ==========================================================
+   START
+========================================================== */
 
 loadSaved();
 
 syncWiki();
 
 </script>
+
 
 </body>
 </html>
